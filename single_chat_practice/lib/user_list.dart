@@ -17,27 +17,7 @@ class _UsersListPageState extends State<UsersListPage> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _loadingData = true;
-    });
-
-    StreamChat.of(context)
-        .client
-        .queryUsers(sort: [SortOption('last_message_at')]).then((value) {
-      setState(() {
-        if (value.users.isNotEmpty) {
-          _userList = value.users.where((element) {
-            return element.id != StreamChat.of(context).currentUser!.id;
-          }).toList();
-        }
-        _loadingData = false;
-      });
-    }).catchError((error) {
-      setState(() {
-        _loadingData = false;
-      });
-      print(error);
-    });
+    _fetchUsers();
   }
 
   @override
@@ -57,41 +37,8 @@ class _UsersListPageState extends State<UsersListPage> {
                     itemBuilder: (BuildContext context, int index) {
                       return ListTile(
                         title: Text(_userList[index].name),
-                        onTap: () async {
-                          var client = StreamChat.of(context).client;
-                          var currentUser = StreamChat.of(context).currentUser;
-
-                          late Channel channel;
-
-                          await client
-                              .channel('messaging', extraData: {
-                                'members': [
-                                  currentUser!.id,
-                                  _userList[index].id
-                                ]
-                              })
-                              .create()
-                              .then((response) {
-                                channel = Channel.fromState(client, response);
-                                channel.watch();
-                              })
-                              .catchError((error) {
-                                print(error);
-                              });
-
-                          if (channel != null) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return StreamChannel(
-                                    child: ChannelPage(),
-                                    channel: channel,
-                                  );
-                                },
-                              ),
-                            );
-                          } else {}
+                        onTap: () {
+                          _navigateToChannel(index);
                         },
                       );
                     },
@@ -101,5 +48,66 @@ class _UsersListPageState extends State<UsersListPage> {
                     itemCount: _userList.length),
       ),
     );
+  }
+
+  void _fetchUsers() async {
+    setState(() {
+      _loadingData = true;
+    });
+
+    StreamChat.of(context).client.queryUsers(
+      filter: Filter.and(
+          [Filter.notEqual("id", StreamChat.of(context).currentUser!.id)]),
+      sort: [const SortOption('last_message_at')],
+    ).then((value) {
+      setState(() {
+        if (value.users.length > 0) {
+          _userList = value.users.where((element) {
+            return element.id != StreamChat.of(context).currentUser!.id;
+          }).toList();
+        }
+        print(_userList);
+        _loadingData = false;
+      });
+    }).catchError((error) {
+      setState(() {
+        _loadingData = false;
+      });
+      print(error);
+    });
+  }
+
+  void _navigateToChannel(int index) async {
+    var client = StreamChat.of(context).client;
+    var currentUser = StreamChat.of(context).currentUser;
+
+    late Channel channel;
+
+    await client
+        .channel('messaging', extraData: {
+          'members': [currentUser!.id, _userList[index].id]
+        })
+        .create()
+        .then((response) {
+          channel = Channel.fromState(client, response);
+          channel.watch();
+        })
+        .catchError((error) {
+          print(error);
+        });
+
+    if (channel != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return StreamChannel(
+              child: ChannelPage(),
+              channel: channel,
+            );
+          },
+        ),
+      );
+    } else {}
   }
 }

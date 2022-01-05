@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -14,7 +15,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  var _userIDController = TextEditingController();
+  final _userIDController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final _client = StreamChatClient('grdysyd7gzfn', logLevel: Level.INFO);
 
@@ -30,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
       key: _scaffoldKey,
       body: SafeArea(
         child: Container(
-          margin: EdgeInsets.only(left: 20, right: 20, top: 50),
+          margin: const EdgeInsets.only(left: 20, right: 20, top: 50),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,47 +64,8 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: ElevatedButton(
-                  onPressed: () async {
-                    final userID = _userIDController.text.trim();
-
-                    if (userID.isEmpty) {
-                      SnackBar snackBar =
-                          SnackBar(content: Text('User ID is empty'));
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      //_scaffoldKey.currentState.showSnackBar(snackBar);
-                      return;
-                    }
-
-                    Uri url = Uri.http('localhost:4000', '/token');
-                    Map<String, String> headers = new Map();
-                    headers['Content-Type'] = 'application/json';
-                    var body = json.encode({
-                      'userId': userID,
-                    });
-
-                    var tokenResponse =
-                        await http.post(url, body: body, headers: headers);
-
-                    var userToken = jsonDecode(tokenResponse.body)['token'];
-
-                    await _client
-                        .connectUser(User(id: userID), userToken)
-                        .then((response) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => StreamChat(
-                            client: _client,
-                            child: UsersListPage(),
-                          ),
-                        ),
-                      );
-                    }).catchError((error) {
-                      print(error);
-                      SnackBar snackBar =
-                          SnackBar(content: Text('Could not login user'));
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    });
+                  onPressed: () {
+                    _login();
                   },
                   child: const Text('Continue'),
                 ),
@@ -113,5 +75,47 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  void _login() async {
+    final userID = _userIDController.text.trim();
+
+    if (userID.isEmpty) {
+      SnackBar snackBar = SnackBar(content: Text('User ID is empty'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return;
+    }
+
+    Uri url;
+    if (Platform.isAndroid) {
+      url = Uri.http('10.0.2.2:4000', '/token');
+    } else {
+      url = Uri.http('localhost:4000', '/token');
+    }
+
+    Map<String, String> headers = new Map();
+    headers['Content-Type'] = 'application/json';
+    var body = json.encode({
+      'userId': userID,
+    });
+
+    var tokenResponse = await http.post(url, body: body, headers: headers);
+    var userToken = jsonDecode(tokenResponse.body)['token'];
+
+    await _client.connectUser(User(id: userID), userToken).then((response) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => StreamChat(
+            client: _client,
+            child: UsersListPage(),
+          ),
+        ),
+      );
+    }).catchError((error) {
+      print(error);
+      SnackBar snackBar = SnackBar(content: Text('Could not login user'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    });
   }
 }
