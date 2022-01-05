@@ -1,29 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:stream_chat_flutter/stream_chat_flutter.dart';
-import 'controller.dart';
-import 'user_list_page.dart';
 
-void main() => runApp(MyApp());
+import 'login.dart';
+
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
-
-  final controller = Get.put(
-    Controller(),
-    tag: 'controller',
-  );
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      builder: (context, child) {
-        return StreamChat(
-          client: controller.client.value,
-          child: child,
-        );
-      },
-      home: UserListPage(),
+    return MaterialApp(
+      title: 'Chat Test',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: LoginPage(),
     );
   }
 }
