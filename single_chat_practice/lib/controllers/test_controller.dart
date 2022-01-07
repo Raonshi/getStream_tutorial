@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:get/get.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -118,5 +119,59 @@ class TestController extends GetxService {
         });
 
     return channel;
+  }
+
+  Future<void> sendCommand(Message message) async {
+    /*
+    Uri url;
+    if (Platform.isAndroid) {
+      url = Uri.http('10.0.2.2:4000', '/save');
+    } else {
+      url = Uri.http('localhost:4000', '/save');
+    }
+
+    Map<String, String> headers = {'Content-Type': 'application/json'};
+    var body = json.encode({
+      'userId': message.user!.id.toString(),
+      'message': message.text,
+    });
+
+    var response = await http.post(url, body: body, headers: headers);
+
+    if (response.statusCode != 200) {
+      print("Failed : ${response.statusCode}");
+      return;
+    }
+
+    print(utf8.decode(response.bodyBytes));
+    */
+    Uri url;
+    if (Platform.isAndroid) {
+      url = Uri.http('10.0.2.2:4000', '/save');
+    } else {
+      url = Uri.http('localhost:4000', '/save');
+    }
+
+    Map<String, String> headers = {'Content-Type': 'application/json'};
+    var body = json.encode({
+      'userId': message.user!.id.toString(),
+      'message': message.text,
+    });
+
+    var response = await http.post(url, body: body, headers: headers);
+
+    print(utf8.decode(response.bodyBytes));
+  }
+
+  Future<void> signInWithGoogle() async {
+    GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly'],
+    );
+
+    try {
+      await _googleSignIn.signIn();
+    } catch (error) {
+      print(error);
+    }
   }
 }

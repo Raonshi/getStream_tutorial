@@ -5,7 +5,9 @@ import 'package:single_chat_practice/pages/login_page.dart';
 import 'package:single_chat_practice/pages/user_list_page.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
@@ -14,6 +16,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    controller.signInWithGoogle();
     return GetMaterialApp(
       title: 'Chat Test',
       theme: ThemeData(

@@ -37,6 +37,7 @@ dependencies:
   get: ^4.6.1
   stream_chat_flutter: ^3.3.2
   stream_chat_persistence: ^3.0.0
+  google_sign_in: ^5.2.1
 
 dev_dependencies:
   flutter_test:

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:single_chat_practice/controllers/test_controller.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class ChannelPage extends StatelessWidget {
-  const ChannelPage({Key? key}) : super(key: key);
+  ChannelPage({Key? key}) : super(key: key);
+  final controller = Get.put(TestController());
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +19,11 @@ class ChannelPage extends StatelessWidget {
                 threadBuilder: (_, parent) => ThreadPage(parent: parent),
               ),
             ),
-            const MessageInput(),
+            MessageInput(
+              onMessageSent: (message) async {
+                await controller.sendCommand(message);
+              },
+            ),
           ],
         ),
       ),
