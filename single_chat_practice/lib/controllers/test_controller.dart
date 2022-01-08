@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:get/get.dart';
+import 'package:single_chat_practice/controllers/firebase_controller.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class TestController extends GetxService {
@@ -21,6 +21,8 @@ class TestController extends GetxService {
   }
 
   Future<bool> login() async {
+    Get.put(FirebaseController());
+
     const userID = 'bbb';
 
     if (userID.isEmpty) {
@@ -161,17 +163,5 @@ class TestController extends GetxService {
     var response = await http.post(url, body: body, headers: headers);
 
     print(utf8.decode(response.bodyBytes));
-  }
-
-  Future<void> signInWithGoogle() async {
-    GoogleSignIn _googleSignIn = GoogleSignIn(
-      scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly'],
-    );
-
-    try {
-      await _googleSignIn.signIn();
-    } catch (error) {
-      print(error);
-    }
   }
 }

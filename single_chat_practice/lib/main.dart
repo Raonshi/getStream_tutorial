@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:single_chat_practice/controllers/test_controller.dart';
@@ -5,7 +6,8 @@ import 'package:single_chat_practice/pages/login_page.dart';
 import 'package:single_chat_practice/pages/user_list_page.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
@@ -16,7 +18,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.signInWithGoogle();
     return GetMaterialApp(
       title: 'Chat Test',
       theme: ThemeData(

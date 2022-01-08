@@ -16,6 +16,12 @@ app.listen(4000, async ()=> {
 //generate token
 app.post('/token', (req, res, next) => {
     console.log('req : ', req.body);
+
+    if(req.body.userId != 'bbb'){
+        res.status(400).json('failed');
+        return;
+    }
+
     const userToken = chat.client.createToken(req.body.userId);
     res.json({success: 200, token: userToken});
 });
@@ -27,6 +33,7 @@ app.post('/save', async (req, res) => {
     await chat.client.updateAppSettings({ 
         custom_action_handler_url: "http://localhost:4000/webhooks/stream/custom-commands?type={type}", 
     });  
+
     
     //var result = await fire.saveData(data);
 

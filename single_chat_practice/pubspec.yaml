@@ -38,6 +38,10 @@ dependencies:
   stream_chat_flutter: ^3.3.2
   stream_chat_persistence: ^3.0.0
   google_sign_in: ^5.2.1
+  mockito: ^5.0.17
+  build_runner: ^2.1.7
+  firebase_core: ^1.11.0
+  firebase_auth: ^3.3.5
 
 dev_dependencies:
   flutter_test:
