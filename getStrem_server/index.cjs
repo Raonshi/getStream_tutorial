@@ -26,16 +26,17 @@ app.post('/token', (req, res, next) => {
     res.json({success: 200, token: userToken});
 });
 
-//message save
-app.post('/save', async (req, res) => {
-    const message = req.body.message;
-    
-    await chat.client.updateAppSettings({ 
+//update custom command url
+app.post('/updateUrl', async (req, res) => {
+    res = await chat.client.updateAppSettings({ 
         custom_action_handler_url: "http://localhost:4000/webhooks/stream/custom-commands?type={type}", 
     });  
 
-    
-    //var result = await fire.saveData(data);
+    console.log(res);
+});
 
-    res.send('helklo');
+
+app.post('/custom-commands', async(req, res) => {
+    const type = req.body;
+    console.log(type);
 });

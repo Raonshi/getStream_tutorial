@@ -33,7 +33,7 @@ class Chat{
             });
         }
 
-        const type = await (await this.client.getChannelType('messaging')).commands;
+        const type = (await this.client.getChannelType('messaging')).commands;
 
         for(var i = 0; i < type.length; i++){
             const name = type[i].name;
