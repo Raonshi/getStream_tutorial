@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:single_chat_practice/controllers/test_controller.dart';
+import 'package:single_chat_practice/controllers/main_controller.dart';
+import 'package:single_chat_practice/pages/home_page.dart';
 import 'package:single_chat_practice/pages/login_page.dart';
-import 'package:single_chat_practice/pages/user_list_page.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 void main() async {
@@ -12,8 +12,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
-  //final controller = Get.put(MainController());
-  final controller = Get.put(TestController());
+  final controller = Get.put(Controller());
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: Obx(
-        () => controller.isLogin.value ? UsersListPage() : const LoginPage(),
+        () => controller.isLogin.value ? HomePage() : const LoginPage(),
       ),
       builder: (context, child) => StreamChat(
         child: child,

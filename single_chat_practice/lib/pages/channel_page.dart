@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:single_chat_practice/controllers/test_controller.dart';
+import 'package:single_chat_practice/controllers/main_controller.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class ChannelPage extends StatelessWidget {
   ChannelPage({Key? key}) : super(key: key);
-  final controller = Get.put(TestController());
+  final controller = Get.put(Controller());
 
   @override
   Widget build(BuildContext context) {

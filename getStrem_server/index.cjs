@@ -26,6 +26,14 @@ app.post('/token', (req, res, next) => {
     res.json({success: 200, token: userToken});
 });
 
+//create custom command
+app.post('/createCommand', async (req, res) => {
+    res = await chat.createNewCommand(req.body);
+
+    console.log(res);
+});
+
+
 //update custom command url
 app.post('/updateUrl', async (req, res) => {
     res = await chat.client.updateAppSettings({ 

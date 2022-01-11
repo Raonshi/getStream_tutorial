@@ -7,12 +7,13 @@ import 'package:get/get.dart';
 import 'package:single_chat_practice/controllers/firebase_controller.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-class TestController extends GetxService {
+class Controller extends GetxService {
   final client = StreamChatClient('grdysyd7gzfn', logLevel: Level.INFO).obs;
   final isLogin = false.obs;
   final loadingData = true.obs;
 
   RxList userList = [].obs;
+  RxInt pageSelected = 0.obs;
 
   @override
   void onInit() async {
@@ -76,7 +77,7 @@ class TestController extends GetxService {
       print(error);
     });
 
-    print('Fetch Done=======');
+    print('======= Fetch Done =======');
   }
 
   Future<Channel> navigateToChannel(int index, BuildContext context) async {
@@ -163,5 +164,9 @@ class TestController extends GetxService {
     var response = await http.post(url, body: body, headers: headers);
 
     print(utf8.decode(response.bodyBytes));
+  }
+
+  void pageChange(int index) {
+    pageSelected.value = index;
   }
 }

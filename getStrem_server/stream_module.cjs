@@ -5,7 +5,6 @@ class Chat{
     constructor(apiKey, secret){
         this.client = new StreamChat('grdysyd7gzfn', 'mf5fnujjbt43rgepwh47h8ccp6r6c54vnrgh9sgn337ce3y4nnq3jxnv88bedanh');
         //init custom command
-        this.createNewCommand('save');
     }
 
     //generate your new command
