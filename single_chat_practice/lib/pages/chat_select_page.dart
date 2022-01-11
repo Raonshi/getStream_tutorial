@@ -14,13 +14,38 @@ class ChatSelectPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Select User"),
       ),
-      body: SafeArea(
-        child: UsersBloc(
-          child: UserListView(
-            userWidget: ChannelPage(),
+      body: Obx(
+        () => SafeArea(
+          child: UsersBloc(
+            child: UserListView(
+              selectedUsers: controller.selectedUser.value,
+              onUserTap: (user, _) {
+                bool isAdd = controller.selectedUser.add(user);
+                if (!isAdd) {
+                  controller.selectedUser.remove(user);
+                }
+              },
+              userWidget: ChannelPage(),
+            ),
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.question_answer_rounded),
+        onPressed: () async {
+          Channel channel = await controller.createChannel(context);
+          Get.off(
+            () => StreamChannel(
+              child: StreamChatTheme(
+                data: StreamChatThemeData.light(),
+                child: ChannelPage(),
+              ),
+              channel: channel,
+            ),
+          );
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
