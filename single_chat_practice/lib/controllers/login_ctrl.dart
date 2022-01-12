@@ -1,41 +1,40 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:http/http.dart' as http;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:single_chat_practice/etc/auth_user.dart';
 import 'package:single_chat_practice/services/firebase_service.dart';
 import 'package:single_chat_practice/services/stream_chat_service.dart';
-import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+import 'package:logger/logger.dart' as lgr;
 
 class LoginController extends GetxController {
   RxBool isLogin = false.obs;
-  RxString id = ''.obs;
-  RxString name = ''.obs;
-
   final authUser = AuthUser().obs;
 
   final firebaseService = Get.find<FirebaseService>();
-  final stramChatService = Get.find<StreamChatService>();
+  final streamChatService = Get.find<StreamChatService>();
 
-  void login() async {
-    Uri url = Platform.isAndroid
-        ? Uri.http('10.0.2.2:4000', '/token')
-        : Uri.http('localhost:4000', '/token');
+  @override
+  void onInit() async {
+    super.onInit();
+    await firebaseService.loginCheck(authUser.value);
 
-    Map<String, String> headers = {'Content-Type': 'application/json'};
-    var body = json.encode({
-      'userId': firebaseService.authUser.value.firebaseUser.email!,
-    });
+    if (firebaseService.isLogin.value) {
+      lgr.Logger().d("LOGIN");
+      await login();
+    }
+  }
 
-    var tokenResponse = await http.post(url, body: body, headers: headers);
-    var userToken = jsonDecode(tokenResponse.body)['token'];
+  //register your account
+  Future<void> register() async {
+    UserCredential authResult = await firebaseService.signInWithGoogle();
+    authUser.value.firebaseUser = authResult.user!;
+    await streamChatService.connect(authUser.value);
+    isLogin.value = true;
+  }
 
-    stramChatService.connect(
-        User(
-          id: firebaseService.authUser.value.firebaseUser.email!,
-          name: firebaseService.authUser.value.firebaseUser.displayName!,
-        ),
-        userToken);
+  //login your account
+  Future<void> login() async {
+    //stream_chat auth
+    await streamChatService.connect(authUser.value);
 
     isLogin.value = firebaseService.isLogin.value;
   }

@@ -5,11 +5,10 @@ import 'package:single_chat_practice/pages/home_page.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
-  final controller = Get.find<LoginController>();
+  final controller = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
-    controller.login();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
@@ -28,7 +27,7 @@ class LoginPage extends StatelessWidget {
                           border: OutlineInputBorder(),
                         ),
                         onChanged: (value) {
-                          controller.id.value = value;
+                          controller.authUser.value.id = value;
                         },
                       ),
                     ),
@@ -44,7 +43,7 @@ class LoginPage extends StatelessWidget {
                           border: OutlineInputBorder(),
                         ),
                         onChanged: (value) {
-                          controller.name.value = value;
+                          controller.authUser.value.name = value;
                         },
                       ),
                     ),
@@ -53,7 +52,7 @@ class LoginPage extends StatelessWidget {
                 const Divider(),
                 ElevatedButton(
                   onPressed: () async {
-                    //await controller.login();
+                    await controller.register();
 
                     if (controller.isLogin.value) {
                       Get.off(HomePage());

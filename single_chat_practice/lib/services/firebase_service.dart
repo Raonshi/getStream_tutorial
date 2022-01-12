@@ -12,31 +12,23 @@ abstract class AuthInterface {
 
 class FirebaseService extends GetxService implements AuthInterface {
   final isLogin = false.obs;
-  final authUser = AuthUser().obs;
-
   final streamChatController = Get.find<StreamChatService>();
 
-  @override
-  void onInit() async {
-    super.onInit();
-    await login();
-  }
-
-  Future<void> login() async {
+  Future<void> loginCheck(AuthUser authUser) async {
     FirebaseAuth.instance.authStateChanges().listen((User? user) async {
       if (user == null) {
         lgr.Logger().d('User Signed out');
         isLogin.value = false;
       } else {
         lgr.Logger().d('User Signed in');
-        authUser.value.firebaseUser = user;
-        //isLogin.value = true;
+        authUser.firebaseUser = user;
+        isLogin.value = true;
       }
     });
   }
 
   @override
-  Future<void> signInWithGoogle() async {
+  Future<UserCredential> signInWithGoogle() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -49,5 +41,7 @@ class FirebaseService extends GetxService implements AuthInterface {
     );
 
     UserCredential authResult = await auth.signInWithCredential(credential);
+
+    return authResult;
   }
 }
