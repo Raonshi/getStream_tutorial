@@ -1,10 +1,5 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
 import 'package:get/get.dart';
-import 'package:single_chat_practice/controllers/firebase_controller.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class Controller extends GetxService {
@@ -14,71 +9,6 @@ class Controller extends GetxService {
 
   RxList userList = [].obs;
   RxInt pageSelected = 0.obs;
-
-  @override
-  void onInit() async {
-    super.onInit();
-    isLogin.value = await login();
-  }
-
-  Future<bool> login() async {
-    Get.put(FirebaseController());
-
-    const userID = 'bbb';
-
-    if (userID.isEmpty) {
-      return false;
-    }
-
-    Uri url;
-    if (Platform.isAndroid) {
-      url = Uri.http('10.0.2.2:4000', '/token');
-    } else {
-      url = Uri.http('localhost:4000', '/token');
-    }
-
-    Map<String, String> headers = {'Content-Type': 'application/json'};
-    var body = json.encode({
-      'userId': userID,
-    });
-
-    var tokenResponse = await http.post(url, body: body, headers: headers);
-
-    var userToken = jsonDecode(tokenResponse.body)['token'];
-
-    await client.value
-        .connectUser(User(id: userID), userToken)
-        .then((response) {
-      return true;
-    }).catchError((error) {
-      print(error);
-      return false;
-    });
-    return true;
-  }
-
-  void fetchUsers(BuildContext context) async {
-    loadingData.value = true;
-
-    await StreamChat.of(context).client.queryUsers(
-      filter: Filter.and(
-          [Filter.notEqual("id", StreamChat.of(context).currentUser!.id)]),
-      sort: [const SortOption('last_message_at')],
-    ).then((value) {
-      if (value.users.length > 0) {
-        userList.value = value.users.where((element) {
-          return element.id != StreamChat.of(context).currentUser!.id;
-        }).toList();
-      }
-      print(userList);
-      loadingData.value = false;
-    }).catchError((error) {
-      loadingData.value = false;
-      print(error);
-    });
-
-    print('======= Fetch Done =======');
-  }
 
   Future<Channel> navigateToChannel(int index, BuildContext context) async {
     var client = StreamChat.of(context).client;
@@ -122,48 +52,6 @@ class Controller extends GetxService {
         });
 
     return channel;
-  }
-
-  Future<void> sendCommand(Message message) async {
-    /*
-    Uri url;
-    if (Platform.isAndroid) {
-      url = Uri.http('10.0.2.2:4000', '/save');
-    } else {
-      url = Uri.http('localhost:4000', '/save');
-    }
-
-    Map<String, String> headers = {'Content-Type': 'application/json'};
-    var body = json.encode({
-      'userId': message.user!.id.toString(),
-      'message': message.text,
-    });
-
-    var response = await http.post(url, body: body, headers: headers);
-
-    if (response.statusCode != 200) {
-      print("Failed : ${response.statusCode}");
-      return;
-    }
-
-    print(utf8.decode(response.bodyBytes));
-    */
-    Uri url;
-    if (Platform.isAndroid) {
-      url = Uri.http('10.0.2.2:4000', '/save');
-    } else {
-      url = Uri.http('localhost:4000', '/save');
-    }
-
-    Map<String, String> headers = {'Content-Type': 'application/json'};
-    var body = json.encode({
-      'userId': message.user!.id.toString(),
-      'message': message.text,
-    });
-
-    var response = await http.post(url, body: body, headers: headers);
-
-    print(utf8.decode(response.bodyBytes));
   }
 
   void pageChange(int index) {

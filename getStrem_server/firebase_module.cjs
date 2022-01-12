@@ -15,7 +15,6 @@ class Firebase{
 
     //put all user into firestore
     saveData = async (data) => {
-
         try{
             var saveData = data['messages'];
         

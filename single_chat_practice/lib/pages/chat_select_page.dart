@@ -31,7 +31,7 @@ class ChatSelectPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.question_answer_rounded),
+        child: const Icon(Icons.question_answer_rounded),
         onPressed: () async {
           Channel channel = await controller.createChannel(context);
           Get.off(

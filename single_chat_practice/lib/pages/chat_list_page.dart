@@ -15,6 +15,9 @@ class ChatListPage extends StatelessWidget {
     return SafeArea(
       child: ChannelsBloc(
         child: ChannelListView(
+          filter: Filter.and([
+            Filter.in_('id', [StreamChat.of(context).currentUser!.id]),
+          ]),
           onChannelTap: (channel, _) {
             Get.to(
               () => StreamChannel(

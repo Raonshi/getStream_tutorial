@@ -4,8 +4,41 @@ const StreamChat = require('stream-chat').StreamChat;
 class Chat{
     constructor(apiKey, secret){
         this.client = new StreamChat('grdysyd7gzfn', 'mf5fnujjbt43rgepwh47h8ccp6r6c54vnrgh9sgn337ce3y4nnq3jxnv88bedanh');
-        //init custom command
+
+        //this.firebaseConfig();
     }
+
+    firebaseConfig = async () => {
+        await this.client.updateAppSettings({
+            firebase_config: {
+                server_key: 'AAAA4Gtxo8k:APA91bHSJ_PikJfY4U1NGsqp-lGK3vArTFNb_1SId3M0KHQGagBRmaVBcs0JZSW6BMWWbnT-GmYBrNAmWUynjA6oiTS5mioXFTED6e0Lz6SFVFLVfKLrFkr3m64aO2R-bRaDnNmKDzG9',
+                notification_template: `{
+                    "message":{
+                        "notification":{
+                            "title":"New messages",
+                            "body":"You have {{ unread_count }} new message(s) from {{ sender.name }}"
+                        },
+                        "android":{
+                            "ttl":"86400s",
+                            "notification":{
+                                "click_action":"OPEN_ACTIVITY_1"
+                            }
+                        }
+                    }
+                }`,
+                data_template: `{
+                    "sender":"{{ sender.id }}",
+                    "channel":{
+                        "type": "{{ channel.type }}",
+                        "id":"{{ channel.id }}"
+                    },
+                    "message":"{{ message.id }}"
+                }`,
+            },
+        });
+    }
+
+    
 
     //generate your new command
     createNewCommand = async (commandName) => {

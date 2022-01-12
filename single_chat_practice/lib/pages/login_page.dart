@@ -1,17 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:single_chat_practice/controllers/login_ctrl.dart';
+import 'package:single_chat_practice/pages/home_page.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  LoginPage({Key? key}) : super(key: key);
+  final controller = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
+    controller.login();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login...'),
+        title: const Text('Login'),
       ),
-      body: const Center(
-        child: CircularProgressIndicator(),
-      ),
+      body: !controller.isLogin.value
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Divider(),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          labelText: 'ID',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          controller.id.value = value;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          labelText: 'Name',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          controller.name.value = value;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                ElevatedButton(
+                  onPressed: () async {
+                    //await controller.login();
+
+                    if (controller.isLogin.value) {
+                      Get.off(HomePage());
+                    }
+                  },
+                  child: const Text('Sign Up'),
+                ),
+              ],
+            )
+          : HomePage(),
+      resizeToAvoidBottomInset: false,
     );
   }
 }

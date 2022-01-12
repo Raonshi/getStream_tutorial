@@ -16,12 +16,6 @@ app.listen(4000, async ()=> {
 //generate token
 app.post('/token', (req, res, next) => {
     console.log('req : ', req.body);
-
-    if(req.body.userId != 'bbb'){
-        res.status(400).json('failed');
-        return;
-    }
-
     const userToken = chat.client.createToken(req.body.userId);
     res.json({success: 200, token: userToken});
 });
@@ -34,16 +28,16 @@ app.post('/createCommand', async (req, res) => {
 });
 
 
-//update custom command url
+//update custom command
 app.post('/updateUrl', async (req, res) => {
     res = await chat.client.updateAppSettings({ 
         custom_action_handler_url: "http://localhost:4000/webhooks/stream/custom-commands?type={type}", 
     });  
-
     console.log(res);
 });
 
 
+//create custom command
 app.post('/custom-commands', async(req, res) => {
     const type = req.body;
     console.log(type);
