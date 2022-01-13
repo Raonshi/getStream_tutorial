@@ -43,4 +43,11 @@ class LoginController extends GetxController {
     //stream_chat auth
     await streamChatService.connect(authUser.value);
   }
+
+  Future<void> logout() async {
+    await firebaseService.signOutWithGoogle();
+    await streamChatService.disconnect();
+
+    isLogin.value = false;
+  }
 }

@@ -44,4 +44,8 @@ class StreamChatService extends GetxService {
 
     authUser.streamChatUser = user;
   }
+
+  Future<void> disconnect() async {
+    await client.value.disconnectUser();
+  }
 }

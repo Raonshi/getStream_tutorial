@@ -60,4 +60,8 @@ class FirebaseService extends GetxService implements AuthInterface {
 
     return authResult;
   }
+
+  Future<void> signOutWithGoogle() async {
+    await FirebaseAuth.instance.signOut();
+  }
 }

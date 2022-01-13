@@ -10,7 +10,7 @@ class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
   final controller = Get.put(Controller());
 
-  List<Widget> page = [UsersListPage(), ChatListPage(), SettingPage()];
+  List<Widget> page = [UsersListPage(), const ChatListPage(), SettingPage()];
 
   @override
   Widget build(BuildContext context) {

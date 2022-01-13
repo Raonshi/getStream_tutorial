@@ -15,7 +15,8 @@ class FriendListController extends GetxController {
     await StreamChat.of(context).client.queryUsers(
       filter: Filter.and([
         //나를 제외한 모든 유저 표시
-        Filter.notEqual('id', loginController.authUser.value.id),
+        Filter.notEqual(
+            'id', loginController.authUser.value.firebaseUser.email!),
       ]),
       sort: [const SortOption('last_message_at')],
     ).then((value) {

@@ -14,6 +14,7 @@ class ChatListPage extends StatelessWidget {
         child: ChannelListView(
           filter: Filter.in_(
               'members', [Get.find<LoginController>().authUser.value.id]),
+          sort: const [SortOption('last_message_at')],
           onChannelTap: (channel, _) {
             Get.to(
               () => StreamChannel(
