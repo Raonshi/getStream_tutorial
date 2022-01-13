@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:single_chat_practice/controllers/main_controller.dart';
+import 'package:single_chat_practice/controllers/login_ctrl.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import 'channel_page.dart';
 
 class ChatListPage extends StatelessWidget {
-  ChatListPage({Key? key}) : super(key: key);
-
-  final controller = Get.put(Controller());
-
+  const ChatListPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: ChannelsBloc(
         child: ChannelListView(
-          filter: Filter.and([
-            Filter.in_('id', [StreamChat.of(context).currentUser!.id]),
-          ]),
+          filter: Filter.in_(
+              'members', [Get.find<LoginController>().authUser.value.id]),
           onChannelTap: (channel, _) {
             Get.to(
               () => StreamChannel(
