@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:single_chat_practice/controllers/login_ctrl.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:logger/logger.dart' as lgr;
 
@@ -8,11 +9,14 @@ class FriendListController extends GetxController {
   RxList userList = [].obs;
 
   void fetchUsers(BuildContext context) async {
+    final loginController = Get.find<LoginController>();
     loadingData.value = true;
 
     await StreamChat.of(context).client.queryUsers(
-      filter: Filter.and(
-          [Filter.notEqual("id", StreamChat.of(context).currentUser!.id)]),
+      filter: Filter.and([
+        //나를 제외한 모든 유저 표시
+        Filter.notEqual('id', loginController.authUser.value.id),
+      ]),
       sort: [const SortOption('last_message_at')],
     ).then((value) {
       if (value.users.length > 0) {

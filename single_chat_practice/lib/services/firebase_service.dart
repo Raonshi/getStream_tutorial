@@ -1,8 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart' as lgr;
 import 'package:single_chat_practice/etc/auth_user.dart';
+import 'package:single_chat_practice/services/api_service.dart';
 import 'package:single_chat_practice/services/stream_chat_service.dart';
 
 abstract class AuthInterface {
@@ -19,23 +24,21 @@ class FirebaseService extends GetxService implements AuthInterface {
     lgr.Logger().d(user!.email.toString());
 
     if (user != null) {
+      String body = json.encode({
+        'email': user.email,
+      });
+
+      var data = await ApiService().post('/loginCheck', body);
+
+      if (data['email'] != user.email) {
+        return false;
+      }
+
+      authUser.id = data['id'];
+      authUser.name = data['name'];
       return true;
     }
 
-/*
-    FirebaseAuth.instance.authStateChanges().listen((User? user) async {
-      if (user == null) {
-        lgr.Logger().d('User Signed out');
-      } else {
-        lgr.Logger().d('User Signed in : ${user.email}');
-
-        if (user.email.toString() == FirebaseAuth.instance.currentUser!.email) {
-          authUser.firebaseUser = user;
-          result = true;
-        }
-      }
-    });
-*/
     lgr.Logger().d("RESULT : $result");
     return result;
   }

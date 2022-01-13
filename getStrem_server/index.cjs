@@ -39,3 +39,12 @@ app.post('/updateUrl', async (req, res) => {
     });  
     console.log(res);
 });
+
+
+app.post('/loginCheck', async (req, res) => {
+    console.log('LoginCheck Call!');
+    console.log(req.body);
+    const result = await fire.readAccount(req.body['email']);
+    res.statusCode = 200;
+    res.send(result);
+})

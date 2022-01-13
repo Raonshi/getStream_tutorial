@@ -17,10 +17,8 @@ class LoginController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    //isLogin.value = await firebaseService.loginCheck(authUser.value);
 
-    //FirebaseAuth.instance.signInWithCredential(credential);
-
+    isLogin.value = await firebaseService.loginCheck(authUser.value);
     lgr.Logger().d("isLogin : ${isLogin.value.toString()}");
 
     //firebase auth에 유저 정보가 있다면

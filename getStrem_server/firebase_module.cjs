@@ -1,4 +1,5 @@
 //firebase init
+const { json } = require('body-parser');
 const {initializeApp, applicationDefault, cert} = require('firebase-admin/app');
 const {getFirestore, Timestamp, FieldValue} = require('firebase-admin/firestore');
 const serviceAccount = require('./serviceAccountKey.json');
@@ -43,7 +44,7 @@ class Firebase{
 
     saveAccount = async (json) => {
         try{
-            var save = this.db.collection('account').doc(json['userId']);
+            var save = this.db.collection('account').doc(json['email']);
             await save.set({
                 'userId': json['userId'],
                 'name': json['name'],
@@ -53,6 +54,26 @@ class Firebase{
         }
         catch(e){
             return false;
+        }
+    }
+
+    readAccount = async (email) => {
+        var json;
+        try{
+            var read = this.db.collection('account').doc(email);
+            await read.get().then((result) => {
+                //console.log(result);
+                json = result;
+            });
+            const userData = {
+                'email': json['_fieldsProto']['email']['stringValue'],
+                'name': json['_fieldsProto']['name']['stringValue'],
+                'id': json['_fieldsProto']['userId']['stringValue'],
+            };
+            return userData;
+        }
+        catch(e){
+            console.log(e);
         }
     }
 }
