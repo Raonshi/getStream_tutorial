@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:single_chat_practice/controllers/main_controller.dart';
+import 'package:single_chat_practice/controllers/home_ctrl.dart';
 import 'package:single_chat_practice/pages/chat_list_page.dart';
 import 'package:single_chat_practice/pages/chat_select_page.dart';
 import 'package:single_chat_practice/pages/setting_page.dart';
@@ -9,7 +9,6 @@ import 'package:single_chat_practice/pages/user_list_page.dart';
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
   final controller = Get.put(Controller());
-
   List<Widget> page = [UsersListPage(), const ChatListPage(), SettingPage()];
 
   @override

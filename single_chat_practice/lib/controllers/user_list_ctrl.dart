@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:single_chat_practice/controllers/login_ctrl.dart';
+import 'package:single_chat_practice/services/stream_chat_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:logger/logger.dart' as lgr;
 
@@ -35,8 +36,8 @@ class FriendListController extends GetxController {
   }
 
   Future<Channel> createChannel(User user, BuildContext context) async {
-    var client = StreamChat.of(context).client;
-    var currentUser = StreamChat.of(context).currentUser;
+    var client = Get.find<StreamChatService>().client.value;
+    var currentUser = client.state.currentUser;
 
     late Channel channel;
 

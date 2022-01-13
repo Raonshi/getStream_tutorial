@@ -1,17 +1,11 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:single_chat_practice/controllers/main_controller.dart';
+import 'package:single_chat_practice/services/stream_chat_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class NotificationService extends GetxService {
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-  }
-
   Future<void> foregroundNotification() async {
-    final client = Get.find<Controller>().client.value;
+    final client = Get.find<StreamChatService>().client.value;
     client
         .on(EventType.messageNew, EventType.notificationMessageNew)
         .listen((event) async {

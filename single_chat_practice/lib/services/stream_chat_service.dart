@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:single_chat_practice/etc/auth_user.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
-
 import 'api_service.dart';
+import 'package:logger/logger.dart' as lgr;
 
 class StreamChatService extends GetxService {
   final client = StreamChatClient('grdysyd7gzfn', logLevel: Level.INFO).obs;
