@@ -40,6 +40,21 @@ class Firebase{
             return false;
         }
     }
+
+    saveAccount = async (json) => {
+        try{
+            var save = this.db.collection('account').doc(json['userId']);
+            await save.set({
+                'userId': json['userId'],
+                'name': json['name'],
+                'email': json['email'],
+            });
+            return true;
+        }
+        catch(e){
+            return false;
+        }
+    }
 }
 
 
