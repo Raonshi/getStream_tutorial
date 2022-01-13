@@ -1,7 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:http/http.dart' as http;
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -23,24 +20,15 @@ class FirebaseService extends GetxService implements AuthInterface {
     User? user = FirebaseAuth.instance.currentUser;
     lgr.Logger().d(user!.email.toString());
 
-    if (user != null) {
-      String body = json.encode({
-        'email': user.email,
-      });
+    String body = json.encode({'email': user.email});
 
-      var data = await ApiService().post('/loginCheck', body);
+    var data = await ApiService().post('/loginCheck', body);
 
-      if (data['email'] != user.email) {
-        return false;
-      }
+    if (data['email'] != user.email) return false;
 
-      authUser.id = data['id'];
-      authUser.name = data['name'];
-      return true;
-    }
-
-    lgr.Logger().d("RESULT : $result");
-    return result;
+    authUser.id = data['id'];
+    authUser.name = data['name'];
+    return true;
   }
 
   @override

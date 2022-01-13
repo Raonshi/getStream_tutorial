@@ -79,6 +79,10 @@ class Chat{
             commands: ['save'],
         });
 
+        await chat.client.updateAppSettings({ 
+            custom_action_handler_url: "http://localhost:4000/custom-commands/"+commandName, 
+        });
+
         console.log(type);
     }
 }

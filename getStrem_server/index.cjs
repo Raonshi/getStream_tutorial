@@ -32,19 +32,20 @@ app.post('/createCommand', async (req, res) => {
 });
 
 
-//update custom command
-app.post('/updateUrl', async (req, res) => {
-    res = await chat.client.updateAppSettings({ 
-        custom_action_handler_url: "http://localhost:4000/webhooks/stream/custom-commands?type={type}", 
-    });  
-    console.log(res);
-});
-
-
+//login check
 app.post('/loginCheck', async (req, res) => {
     console.log('LoginCheck Call!');
     console.log(req.body);
     const result = await fire.readAccount(req.body['email']);
     res.statusCode = 200;
     res.send(result);
+})
+
+
+//save command call
+app.post('/custom-commands/save', async (req, res) => {
+    const cid = req.body['message']['cid'];
+    const text = req.body['message']['args'];
+    const data = await chat.client.search({cid: cid}, {text: { "$autocomplete": text }});
+    const isSave = await fire.saveData(data.results);
 })

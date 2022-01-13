@@ -1,27 +1,27 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:http/http.dart' as http;
-
+import 'package:logger/logger.dart' as lgr;
 import 'package:get/get.dart';
+import 'package:single_chat_practice/services/api_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class ChannelController extends GetxController {
   Future<void> sendCommand(Message message) async {
-    Uri url;
-    if (Platform.isAndroid) {
-      url = Uri.http('10.0.2.2:4000', '/save');
-    } else {
-      url = Uri.http('localhost:4000', '/save');
+    if (message.text == null) {
+      return;
     }
+    if (message.text!.contains('/save')) {
+      await save(message);
+    }
+  }
 
-    Map<String, String> headers = {'Content-Type': 'application/json'};
+  Future<void> save(Message message) async {
     var body = json.encode({
       'userId': message.user!.id.toString(),
       'message': message.text,
     });
 
-    var response = await http.post(url, body: body, headers: headers);
+    dynamic data = await ApiService().post('/custom-command/save', body);
 
-    print(utf8.decode(response.bodyBytes));
+    lgr.Logger().d(data);
   }
 }
