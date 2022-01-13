@@ -14,6 +14,7 @@
     "express": "^4.17.2",
     "firebase": "^9.6.1",
     "firebase-admin": "^10.0.1",
+    "package": "^1.0.1",
     "package.json": "^2.0.1",
     "stream-chat": "^5.1.1"
   }

@@ -1,11 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:single_chat_practice/controllers/login_ctrl.dart';
 import 'package:single_chat_practice/init_binding.dart';
 import 'package:single_chat_practice/pages/home_page.dart';
 import 'package:single_chat_practice/pages/login_page.dart';
-import 'package:single_chat_practice/services/firebase_service.dart';
-import 'package:single_chat_practice/services/stream_chat_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 void main() async {
@@ -15,8 +14,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final streamController = Get.put(StreamChatService());
-  final firebaseController = Get.put(FirebaseService());
+  final loginController = Get.put(LoginController());
 
   MyApp({Key? key}) : super(key: key);
 
@@ -29,11 +27,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: Obx(
-        () => firebaseController.isLogin.value ? HomePage() : LoginPage(),
+        () => loginController.isLogin.value ? HomePage() : LoginPage(),
       ),
       builder: (context, child) => StreamChat(
         child: child,
-        client: streamController.client.value,
+        client: loginController.streamChatService.client.value,
       ),
     );
   }

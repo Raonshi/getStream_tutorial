@@ -17,19 +17,23 @@ class StreamChatService extends GetxService {
 
     Map<String, String> headers = {'Content-Type': 'application/json'};
     var body = json.encode({
-      'userId': authUser.firebaseUser.email!,
+      'userId': authUser.id,
+      'name': authUser.name,
+      'email': authUser.firebaseUser.email!
     });
 
     var tokenResponse = await http.post(url, body: body, headers: headers);
     var userToken = jsonDecode(tokenResponse.body)['token'];
 
+    User user = User(
+      id: authUser.id,
+      name: authUser.name,
+      extraData: {'email': authUser.firebaseUser.email},
+    );
+
     await client.value
         .connectUser(
-      User(
-        id: authUser.id,
-        name: authUser.name,
-        extraData: {'email': authUser.firebaseUser.email},
-      ),
+      user,
       userToken,
     )
         .then((response) {
@@ -37,5 +41,7 @@ class StreamChatService extends GetxService {
     }).catchError((error) {
       return false;
     });
+
+    authUser.streamChatUser = user;
   }
 }

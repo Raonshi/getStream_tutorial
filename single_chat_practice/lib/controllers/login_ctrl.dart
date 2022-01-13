@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:single_chat_practice/etc/auth_user.dart';
@@ -9,21 +11,27 @@ class LoginController extends GetxController {
   RxBool isLogin = false.obs;
   final authUser = AuthUser().obs;
 
-  final firebaseService = Get.find<FirebaseService>();
-  final streamChatService = Get.find<StreamChatService>();
+  final streamChatService = Get.put(StreamChatService());
+  final firebaseService = Get.put(FirebaseService());
 
   @override
   void onInit() async {
     super.onInit();
-    await firebaseService.loginCheck(authUser.value);
+    isLogin.value = await firebaseService.loginCheck(authUser.value);
 
-    if (firebaseService.isLogin.value) {
+    //FirebaseAuth.instance.signInWithCredential(credential);
+
+    lgr.Logger().d("isLogin : ${isLogin.value.toString()}");
+
+    //firebase auth에 유저 정보가 있다면
+    if (isLogin.value) {
       lgr.Logger().d("LOGIN");
       await login();
     }
   }
 
   //register your account
+  //just call when you click the sign up button in login page.
   Future<void> register() async {
     UserCredential authResult = await firebaseService.signInWithGoogle();
     authUser.value.firebaseUser = authResult.user!;
@@ -33,9 +41,8 @@ class LoginController extends GetxController {
 
   //login your account
   Future<void> login() async {
+    authUser.value.firebaseUser = FirebaseAuth.instance.currentUser!;
     //stream_chat auth
     await streamChatService.connect(authUser.value);
-
-    isLogin.value = firebaseService.isLogin.value;
   }
 }
