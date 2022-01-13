@@ -17,7 +17,11 @@ app.listen(4000, async ()=> {
 app.post('/token', (req, res, next) => {
     console.log('req : ', req.body);
     const userToken = chat.client.createToken(req.body.userId);
-    res.json({success: 200, token: userToken});
+    const storeAccount = fire.saveAccount(req.body);
+
+    if(storeAccount){
+        res.json({success: 200, token: userToken});
+    } 
 });
 
 //create custom command
@@ -34,11 +38,4 @@ app.post('/updateUrl', async (req, res) => {
         custom_action_handler_url: "http://localhost:4000/webhooks/stream/custom-commands?type={type}", 
     });  
     console.log(res);
-});
-
-
-//create custom command
-app.post('/custom-commands', async(req, res) => {
-    const type = req.body;
-    console.log(type);
 });
