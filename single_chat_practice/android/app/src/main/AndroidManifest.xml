@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.single_chat_practice">
+    package="com.nptn.single_chat_practice">
    <application
         android:label="single_chat_practice"
         android:name="${applicationName}"

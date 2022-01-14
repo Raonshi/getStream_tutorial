@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -18,9 +19,7 @@ class FirebaseService extends GetxService implements AuthInterface {
   Future<bool> loginCheck(AuthUser authUser) async {
     bool result = false;
     User? user = FirebaseAuth.instance.currentUser;
-    lgr.Logger().d(user!.email.toString());
-
-    String body = json.encode({'email': user.email});
+    String body = json.encode({'email': user!.email});
 
     var data = await ApiService().post('/loginCheck', body);
 
@@ -34,7 +33,9 @@ class FirebaseService extends GetxService implements AuthInterface {
   @override
   Future<UserCredential> signInWithGoogle() async {
     FirebaseAuth auth = FirebaseAuth.instance;
-    GoogleSignIn googleSignIn = GoogleSignIn();
+    GoogleSignIn googleSignIn = Platform.isAndroid
+        ? GoogleSignIn(scopes: ['profile', 'email'])
+        : GoogleSignIn();
 
     GoogleSignInAccount? account = await googleSignIn.signIn();
     GoogleSignInAuthentication authentication = await account!.authentication;

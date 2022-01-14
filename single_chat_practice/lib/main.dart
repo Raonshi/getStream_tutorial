@@ -5,6 +5,7 @@ import 'package:single_chat_practice/controllers/login_ctrl.dart';
 import 'package:single_chat_practice/init_binding.dart';
 import 'package:single_chat_practice/pages/home_page.dart';
 import 'package:single_chat_practice/pages/login_page.dart';
+import 'package:single_chat_practice/services/notification_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 void main() async {
@@ -15,6 +16,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final loginController = Get.put(LoginController());
+  final notificationService = Get.put(NotificationService());
 
   MyApp({Key? key}) : super(key: key);
 
@@ -32,6 +34,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) => StreamChat(
         child: child,
         client: loginController.streamChatService.client.value,
+        onBackgroundEventReceived: notificationService.backgroundNotification,
       ),
     );
   }
