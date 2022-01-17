@@ -1,5 +1,9 @@
 import 'package:mockito/annotations.dart';
-import 'package:single_chat_practice/services/firebase_service.dart';
+import 'package:single_chat_practice/services/api_service.dart';
 
-@GenerateMocks([AuthInterface])
+@GenerateMocks([WebInterface])
 void main() {}
+
+List<Map<String, dynamic>> dummyList = [
+  {},
+];

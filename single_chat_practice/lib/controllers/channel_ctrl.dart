@@ -5,6 +5,7 @@ import 'package:single_chat_practice/services/api_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class ChannelController extends GetxController {
+  //send custom command
   Future<void> sendCommand(Message message) async {
     if (message.text == null) {
       return;

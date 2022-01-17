@@ -9,6 +9,7 @@ app.use(bodyParser.json());
 const fire = Firebase.firebase;
 const chat = Chat.chat;
 
+//server init
 app.listen(4000, async ()=> {
     console.log('App listening on port 4000!');
 });

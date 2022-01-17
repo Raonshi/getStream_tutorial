@@ -19,7 +19,7 @@ class LoginController extends GetxController {
     isLogin.value = await firebaseService.loginCheck(authUser.value);
     lgr.Logger().d("isLogin : ${isLogin.value.toString()}");
 
-    //firebase auth에 유저 정보가 있다면
+    //if firebase has user's infomation
     if (isLogin.value) {
       lgr.Logger().d("LOGIN");
       await login();
@@ -42,6 +42,7 @@ class LoginController extends GetxController {
     await streamChatService.connect(authUser.value);
   }
 
+  //dispose
   Future<void> logout() async {
     await firebaseService.signOutWithGoogle();
     await streamChatService.disconnect();

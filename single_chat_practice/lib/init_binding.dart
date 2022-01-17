@@ -3,6 +3,7 @@ import 'package:single_chat_practice/services/firebase_service.dart';
 import 'package:single_chat_practice/services/notification_service.dart';
 import 'package:single_chat_practice/services/stream_chat_service.dart';
 
+//maybe doesn't work
 class InitBinding extends Bindings {
   @override
   void dependencies() {

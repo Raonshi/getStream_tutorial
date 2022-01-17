@@ -8,6 +8,7 @@ class Chat{
         //this.firebaseConfig();
     }
 
+    //firebase module configration
     firebaseConfig = async () => {
         await this.client.updateAppSettings({
             firebase_config: {

@@ -41,6 +41,8 @@ class Firebase{
         }
     }
 
+
+    //write account infomation to firestore
     saveAccount = async (json) => {
         try{
             var save = this.db.collection('account').doc(json['email']);
@@ -56,6 +58,7 @@ class Firebase{
         }
     }
 
+    //read account infomation from firestore
     readAccount = async (email) => {
         var json;
         try{

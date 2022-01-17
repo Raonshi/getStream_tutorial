@@ -16,6 +16,7 @@ class FirebaseService extends GetxService implements AuthInterface {
   //final isLogin = false.obs;
   final streamChatController = Get.find<StreamChatService>();
 
+  //loginCheck when you start application
   Future<bool> loginCheck(AuthUser authUser) async {
     bool result = false;
     User? user = FirebaseAuth.instance.currentUser;
@@ -30,6 +31,7 @@ class FirebaseService extends GetxService implements AuthInterface {
     return true;
   }
 
+  //login with google
   @override
   Future<UserCredential> signInWithGoogle() async {
     FirebaseAuth auth = FirebaseAuth.instance;
@@ -50,6 +52,7 @@ class FirebaseService extends GetxService implements AuthInterface {
     return authResult;
   }
 
+  //logout from google
   Future<void> signOutWithGoogle() async {
     await FirebaseAuth.instance.signOut();
   }
