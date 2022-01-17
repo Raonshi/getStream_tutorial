@@ -10,6 +10,8 @@ class NotificationService extends GetxService {
   late FirebaseMessaging _firebaseMessaging;
   final streamChatService = Get.find<StreamChatService>();
 
+  String messageIdTemp = '';
+
   @override
   void onInit() async {
     _firebaseMessaging = FirebaseMessaging.instance;
@@ -23,7 +25,6 @@ class NotificationService extends GetxService {
       sound: true,
     );
 
-    //must be checked -> it doesn't work
     foregroundNotification();
     super.onInit();
   }
@@ -36,18 +37,21 @@ class NotificationService extends GetxService {
 
   //Foreground Notification
   void foregroundNotification() {
-    streamChatService.client.value
+    final client = streamChatService.client.value;
+    client
         .on(EventType.messageNew, EventType.notificationMessageNew)
-        .listen((event) {
-      showNotification(streamChatService.client.value, event);
+        .listen((event) async {
+      lgr.Logger().d("YEEEEEEEEE : ${event.type}");
+      await showNotification(client, event);
     });
   }
 
   //Showing Notification
-  void showNotification(StreamChatClient client, Event event) async {
+  showNotification(StreamChatClient client, Event event) async {
     //null filtering
     if (![EventType.messageNew, EventType.notificationMessageNew]
-        .contains(event.type)) {
+            .contains(event.type) ||
+        client.state.currentUser!.id == event.message!.user!.id) {
       return;
     }
     if (event.message == null) {
@@ -61,28 +65,28 @@ class NotificationService extends GetxService {
       iOS: IOSInitializationSettings(),
     );
 
-    //generate notification
-    bool? isInit = await flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
-    );
-
-    lgr.Logger().d("============================$isInit");
-
-    //show notification
-    await flutterLocalNotificationsPlugin.show(
-      event.message!.id.hashCode,
-      event.message!.user!.name,
-      event.message!.text,
-      const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'message channel id',
-          'Message Channel Name',
-          channelDescription: 'Channel used for showing messages',
-          priority: Priority.high,
-          importance: Importance.high,
+    if (event.message!.id != messageIdTemp) {
+      messageIdTemp = event.message!.id;
+      //generate notification
+      await flutterLocalNotificationsPlugin.initialize(
+        initializationSettings,
+      );
+      //show notification
+      await flutterLocalNotificationsPlugin.show(
+        event.message!.id.hashCode,
+        event.message!.user!.name,
+        event.message!.text,
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+            'message channel id',
+            'Message Channel Name',
+            channelDescription: 'Channel used for showing messages',
+            priority: Priority.high,
+            importance: Importance.high,
+          ),
+          iOS: IOSNotificationDetails(),
         ),
-        iOS: IOSNotificationDetails(),
-      ),
-    );
+      );
+    }
   }
 }
