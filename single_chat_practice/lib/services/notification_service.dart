@@ -17,8 +17,14 @@ class NotificationService extends GetxService {
       streamChatService.client.value.addDevice(token, PushProvider.firebase);
     });
 
+    _firebaseMessaging.setForegroundNotificationPresentationOptions(
+      alert: true, // Required to display a heads up notification
+      badge: true,
+      sound: true,
+    );
+
     //must be checked -> it doesn't work
-    await foregroundNotification();
+    foregroundNotification();
     super.onInit();
   }
 
@@ -29,10 +35,10 @@ class NotificationService extends GetxService {
   }
 
   //Foreground Notification
-  Future<void> foregroundNotification() async {
+  void foregroundNotification() {
     streamChatService.client.value
         .on(EventType.messageNew, EventType.notificationMessageNew)
-        .listen((event) async {
+        .listen((event) {
       showNotification(streamChatService.client.value, event);
     });
   }

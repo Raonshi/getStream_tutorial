@@ -19,8 +19,8 @@ class ApiService implements WebInterface {
     Logger().d('ApiService Created!');
   }
 
-  //final server = Platform.isAndroid ? '10.0.2.2:4000' : 'localhost:4000';
-  final server = '49e5-121-134-227-161.ngrok.io';
+  final server = Platform.isAndroid ? '10.0.2.2:4000' : 'localhost:4000';
+  //final server = '49e5-121-134-227-161.ngrok.io';
 
   //post api operation
   @override
