@@ -3,7 +3,7 @@
 // Do not manually edit this file.
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:single_chat_practice/services/api_service.dart' as _i2;
+import 'package:single_chat_practice/services/firebase_service.dart' as _i2;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: avoid_setters_without_getters
@@ -14,15 +14,11 @@ import 'package:single_chat_practice/services/api_service.dart' as _i2;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 
-/// A class which mocks [WebInterface].
+/// A class which mocks [AuthInterface].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockWebInterface extends _i1.Mock implements _i2.WebInterface {
-  MockWebInterface() {
+class MockAuthInterface extends _i1.Mock implements _i2.AuthInterface {
+  MockAuthInterface() {
     _i1.throwOnMissingStub(this);
   }
-
-  @override
-  dynamic post(String? path, String? body) =>
-      super.noSuchMethod(Invocation.method(#post, [path, body]));
 }

@@ -3,18 +3,16 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:logger/logger.dart' as lgr;
 import 'package:single_chat_practice/etc/auth_user.dart';
 import 'package:single_chat_practice/services/api_service.dart';
-import 'package:single_chat_practice/services/stream_chat_service.dart';
 
 abstract class AuthInterface {
-  Future<void> signInWithGoogle();
+  signInWithGoogle();
 }
 
 class FirebaseService extends GetxService implements AuthInterface {
   //final isLogin = false.obs;
-  final streamChatController = Get.find<StreamChatService>();
+  //final streamChatController = Get.find<StreamChatService>();
 
   //loginCheck when you start application
   Future<bool> loginCheck(AuthUser authUser) async {

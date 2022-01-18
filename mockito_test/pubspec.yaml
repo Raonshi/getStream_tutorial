@@ -1,4 +1,4 @@
-name: single_chat_practice
+name: mockito_test
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -34,23 +34,21 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  get: ^4.6.1
-  stream_chat_flutter: ^3.3.2
-  stream_chat_persistence: ^3.0.0
-  google_sign_in: ^5.2.1
+
   firebase_core: ^1.11.0
   firebase_auth: ^3.3.5
   firebase_messaging: ^11.2.5
-  flutter_local_notifications: ^9.2.0
+  google_sign_in: ^5.2.1
 
-dev_dependencies:
-  mockito: ^5.0.17
   build_runner: ^2.1.7
-  logger: ^1.1.0
-  cloud_firestore_mocks: ^0.9.0+1
+  mockito: ^5.0.17
+
+  fake_cloud_firestore: ^1.2.0
+  firebase_storage_mocks: ^0.5.0
   firebase_auth_mocks: ^0.8.2
   google_sign_in_mocks: ^0.2.1
 
+dev_dependencies:
   flutter_test:
     sdk: flutter
 

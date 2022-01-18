@@ -76,6 +76,10 @@ class Firebase{
         }
         catch(e){
             console.log(e);
+            const failData = {
+                'result': 'failed',
+                'reason': e,
+            };
         }
     }
 }

@@ -15,10 +15,8 @@ class LoginController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-
     isLogin.value = await firebaseService.loginCheck(authUser.value);
     lgr.Logger().d("isLogin : ${isLogin.value.toString()}");
-
     //if firebase has user's infomation
     if (isLogin.value) {
       lgr.Logger().d("LOGIN");
