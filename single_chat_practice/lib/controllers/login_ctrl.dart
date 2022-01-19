@@ -3,10 +3,9 @@ import 'package:get/get.dart';
 import 'package:single_chat_practice/etc/auth_user.dart';
 import 'package:single_chat_practice/services/firebase_service.dart';
 import 'package:single_chat_practice/services/stream_chat_service.dart';
-import 'package:logger/logger.dart' as lgr;
 
 class LoginController extends GetxController {
-  RxBool isLogin = false.obs;
+  final isLogin = false.obs;
   final authUser = AuthUser().obs;
 
   final streamChatService = Get.put(StreamChatService());
@@ -15,11 +14,11 @@ class LoginController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    isLogin.value = await firebaseService.loginCheck(authUser.value);
-    lgr.Logger().d("isLogin : ${isLogin.value.toString()}");
+    await firebaseService.loginCheck(authUser.value);
+
     //if firebase has user's infomation
     if (isLogin.value) {
-      lgr.Logger().d("LOGIN");
+      authUser.value.firebaseUser = FirebaseAuth.instance.currentUser!;
       await login();
     }
   }
@@ -27,25 +26,25 @@ class LoginController extends GetxController {
   //register your account
   //just call when you click the sign up button in login page.
   Future<void> register() async {
-    UserCredential authResult = await firebaseService.signInWithGoogle();
-    //authUser.value.firebaseUser = authResult.user!;
-    //await streamChatService.connect(authUser.value);
-    await login();
-    isLogin.value = true;
+    authUser.value.firebaseUser = await firebaseService.signInWithGoogle();
+    isLogin.value = await login();
   }
 
   //login your account
-  Future<void> login() async {
-    authUser.value.firebaseUser = FirebaseAuth.instance.currentUser!;
-    //stream_chat auth
-    await streamChatService.connect(authUser.value);
+  Future<bool> login() async {
+    try {
+      authUser.value.streamChatUser =
+          await streamChatService.connect(authUser.value);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   //dispose
   Future<void> logout() async {
     await firebaseService.signOutWithGoogle();
     await streamChatService.disconnect();
-
     isLogin.value = false;
   }
 }

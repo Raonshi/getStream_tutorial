@@ -8,51 +8,44 @@ import 'package:single_chat_practice/pages/user_list_page.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
-  final controller = Get.put(Controller());
-  List<Widget> page = [UsersListPage(), const ChatListPage(), SettingPage()];
+  final controller = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Simple Chat App"),
+      appBar: AppBar(title: Obx(() => Text(controller.appBarText.value))),
+      body: SafeArea(
+        child: PageView(
+          controller: controller.pageController.value,
+          physics: const NeverScrollableScrollPhysics(),
+          children: <Widget>[
+            UsersListPage(),
+            ChatListPage(),
+            SettingPage(),
+          ],
+        ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 10,
-            child: Obx(
-              () => SafeArea(
-                child: page[controller.pageSelected.value],
-              ),
-            ),
+
+      //Bottom Navigator bar
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: controller.pageSelected.value,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people),
+            label: 'Friends',
           ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Spacer(),
-                ElevatedButton(
-                  onPressed: () => controller.pageChange(0),
-                  child: const Text("Friends"),
-                ),
-                const Spacer(),
-                ElevatedButton(
-                  onPressed: () => controller.pageChange(1),
-                  child: const Text("Chat"),
-                ),
-                const Spacer(),
-                ElevatedButton(
-                  onPressed: () => controller.pageChange(2),
-                  child: const Text("Settings"),
-                ),
-                const Spacer(),
-              ],
-            ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_rounded),
+            label: 'Chatting',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
           ),
         ],
+        onTap: (value) => controller.pageChange(value),
       ),
+
       //Floating Action Button : Create Chat
       floatingActionButton: FloatingActionButton(
         mini: true,

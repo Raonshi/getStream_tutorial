@@ -1,17 +1,15 @@
 import 'dart:convert';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:single_chat_practice/etc/auth_user.dart';
 import 'package:single_chat_practice/services/notification_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'api_service.dart';
-import 'package:logger/logger.dart' as lgr;
 
 class StreamChatService extends GetxService {
   final client = StreamChatClient('grdysyd7gzfn', logLevel: Level.INFO).obs;
 
   //connect client
-  Future<void> connect(AuthUser authUser) async {
+  Future<User> connect(AuthUser authUser) async {
     var body = json.encode({
       'userId': authUser.id,
       'name': authUser.name,
@@ -36,12 +34,14 @@ class StreamChatService extends GetxService {
       return false;
     });
 
+    //listen notification event
     client.value
         .on(EventType.messageNew, EventType.notificationMessageNew)
         .listen((event) async {
       Get.find<NotificationService>().showNotification(client.value, event);
     });
-    authUser.streamChatUser = user;
+
+    return user;
   }
 
   //dispose

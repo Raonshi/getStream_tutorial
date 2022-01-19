@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:single_chat_practice/controllers/login_ctrl.dart';
 import 'package:single_chat_practice/etc/auth_user.dart';
 import 'package:single_chat_practice/services/api_service.dart';
 
@@ -15,23 +16,25 @@ class FirebaseService extends GetxService implements AuthInterface {
   //final streamChatController = Get.find<StreamChatService>();
 
   //loginCheck when you start application
-  Future<bool> loginCheck(AuthUser authUser) async {
-    bool result = false;
+  Future<void> loginCheck(AuthUser authUser) async {
     User? user = FirebaseAuth.instance.currentUser;
     String body = json.encode({'email': user!.email});
 
     var data = await ApiService().post('/loginCheck', body);
 
-    if (data['email'] != user.email) return false;
+    if (data['email'] != user.email) {
+      Get.find<LoginController>().isLogin.value = false;
+      return;
+    }
 
     authUser.id = data['id'];
     authUser.name = data['name'];
-    return true;
+    Get.find<LoginController>().isLogin.value = true;
   }
 
   //login with google
   @override
-  Future<UserCredential> signInWithGoogle() async {
+  Future<User> signInWithGoogle() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     GoogleSignIn googleSignIn = Platform.isAndroid
         ? GoogleSignIn(scopes: ['profile', 'email'])
@@ -46,8 +49,9 @@ class FirebaseService extends GetxService implements AuthInterface {
     );
 
     UserCredential authResult = await auth.signInWithCredential(credential);
+    User user = authResult.user!;
 
-    return authResult;
+    return user;
   }
 
   //logout from google
