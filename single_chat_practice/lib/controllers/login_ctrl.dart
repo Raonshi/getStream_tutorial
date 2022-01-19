@@ -8,8 +8,8 @@ class LoginController extends GetxController {
   final isLogin = false.obs;
   final authUser = AuthUser().obs;
 
-  final streamChatService = Get.put(StreamChatService());
-  final firebaseService = Get.put(FirebaseService());
+  final streamChatService = Get.find<StreamChatService>();
+  final firebaseService = Get.find<FirebaseService>();
 
   @override
   void onInit() async {

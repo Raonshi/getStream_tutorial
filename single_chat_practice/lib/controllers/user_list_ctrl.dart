@@ -5,7 +5,7 @@ import 'package:single_chat_practice/services/stream_chat_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:logger/logger.dart' as lgr;
 
-class FriendListController extends GetxController {
+class UserListController extends GetxController {
   RxBool loadingData = true.obs;
   RxList userList = [].obs;
 

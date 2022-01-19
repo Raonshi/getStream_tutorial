@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 //a tiny controller -> for page changing
 class HomeController extends GetxService {
-  final appBarText = ''.obs;
+  final appBarText = 'Friends List'.obs;
   final pageSelected = 0.obs;
   final pageController = PageController(initialPage: 0).obs;
 
@@ -12,7 +12,7 @@ class HomeController extends GetxService {
     pageController.value.animateToPage(
       index,
       duration: const Duration(milliseconds: 500),
-      curve: Curves.linear,
+      curve: Curves.fastOutSlowIn,
     );
 
     switch (index) {

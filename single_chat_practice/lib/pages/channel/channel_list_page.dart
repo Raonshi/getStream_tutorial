@@ -5,8 +5,8 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import 'channel_page.dart';
 
-class ChatListPage extends StatelessWidget {
-  const ChatListPage({Key? key}) : super(key: key);
+class ChannelListPage extends StatelessWidget {
+  const ChannelListPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Obx(

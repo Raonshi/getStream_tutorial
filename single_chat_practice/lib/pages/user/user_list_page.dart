@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:single_chat_practice/controllers/user_list_ctrl.dart';
-import 'package:single_chat_practice/pages/channel_page.dart';
+import 'package:single_chat_practice/controllers/user_list_ctrl.dart'
+    as userCtrl;
+import 'package:single_chat_practice/pages/channel/channel_page.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-class UsersListPage extends StatelessWidget {
-  final controller = Get.put(FriendListController());
+class UserListPage extends StatelessWidget {
+  final controller = Get.put(userCtrl.UserListController());
 
-  UsersListPage({Key? key}) : super(key: key);
+  UserListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

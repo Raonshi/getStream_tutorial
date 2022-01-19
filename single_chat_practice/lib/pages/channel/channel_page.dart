@@ -5,7 +5,6 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class ChannelPage extends StatelessWidget {
   ChannelPage({Key? key}) : super(key: key);
-  //final controller = Get.put(Controller());
   final controller = Get.put(ChannelController());
 
   @override

@@ -11,19 +11,24 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  //calling GetxController initializing method in main() is much better
+  //than calling in GetMaterialApp's initBinding parameter.
+  //because if you can not control widget state,
+  //GetMaterialApp will be  call initBinding when you didn't recognize.
+  InitBinding().initBind();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   final loginController = Get.put(LoginController());
-  final notificationService = Get.put(NotificationService());
+  final notificationService = Get.find<NotificationService>();
 
   MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialBinding: InitBinding(),
       title: 'Chat Test',
       theme: ThemeData(
         primarySwatch: Colors.blue,

@@ -12,9 +12,6 @@ abstract class AuthInterface {
 }
 
 class FirebaseService extends GetxService implements AuthInterface {
-  //final isLogin = false.obs;
-  //final streamChatController = Get.find<StreamChatService>();
-
   //loginCheck when you start application
   Future<void> loginCheck(AuthUser authUser) async {
     User? user = FirebaseAuth.instance.currentUser;

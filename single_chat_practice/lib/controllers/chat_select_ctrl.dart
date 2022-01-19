@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:single_chat_practice/controllers/user_list_ctrl.dart';
+import 'package:single_chat_practice/controllers/user_list_ctrl.dart'
+    as userCtrl;
 import 'package:single_chat_practice/services/stream_chat_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:logger/logger.dart' as lgr;
@@ -12,7 +13,7 @@ class ChatSelectController extends GetxController {
   //generate new channel
   Future<Channel> createChannel(BuildContext context) async {
     if (selectedUser.length == 1) {
-      return Get.find<FriendListController>()
+      return Get.find<userCtrl.UserListController>()
           .createChannel(selectedUser.first, context);
     } else {
       var client = Get.find<StreamChatService>().client.value;
