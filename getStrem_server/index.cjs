@@ -44,7 +44,8 @@ app.post('/loginCheck', async (req, res) => {
 
 
 //save command call
-app.post('/custom-commands/save', async (req, res) => {
+app.post('/custom-commands', async (req, res) => {
+    console.log(req.query);
     const cid = req.body['message']['cid'];
     const text = req.body['message']['args'];
     const data = await chat.client.search({cid: cid}, {text: { "$autocomplete": text }});

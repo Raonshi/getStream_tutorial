@@ -17,7 +17,7 @@ class StreamChatService extends GetxService {
     });
 
     //request to server and response
-    dynamic data = await ApiService().post('/token', body);
+    dynamic data = await ApiService().requestToken(body);
     var userToken = data['token'];
 
     //user infomation serialize

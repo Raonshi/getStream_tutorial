@@ -17,7 +17,7 @@ class FirebaseService extends GetxService implements AuthInterface {
     User? user = FirebaseAuth.instance.currentUser;
     String body = json.encode({'email': user!.email});
 
-    var data = await ApiService().post('/loginCheck', body);
+    var data = await ApiService().requestLoginCheck(body);
 
     if (data['email'] != user.email) {
       Get.find<LoginController>().isLogin.value = false;
