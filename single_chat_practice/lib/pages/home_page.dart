@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           children: <Widget>[
             UserListPage(),
-            ChannelListPage(),
+            const ChannelListPage(),
             SettingPage(),
           ],
         ),
@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
               label: 'Friends',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.add_rounded),
+              icon: Icon(Icons.question_answer_rounded),
               label: 'Chatting',
             ),
             BottomNavigationBarItem(

@@ -8,22 +8,16 @@ import 'package:logger/logger.dart' as lgr;
 class UserListController extends GetxController {
   RxBool loadingData = true.obs;
   RxList userList = [].obs;
+  final loginController = Get.find<LoginController>();
 
   void fetchUsers(BuildContext context) async {
-    final loginController = Get.find<LoginController>();
+    final client = loginController.streamChatService.client.value;
     loadingData.value = true;
 
-    await StreamChat.of(context).client.queryUsers(
-      filter: Filter.and([
-        //나를 제외한 모든 유저 표시
-        Filter.notEqual(
-            'id', loginController.authUser.value.firebaseUser.email!),
-      ]),
-      sort: [const SortOption('last_message_at')],
-    ).then((value) {
-      if (value.users.length > 0) {
+    await client.queryUsers(filter: const Filter.empty()).then((value) {
+      if (value.users.isNotEmpty) {
         userList.value = value.users.where((element) {
-          return element.id != StreamChat.of(context).currentUser!.id;
+          return element.id != client.state.currentUser!.id;
         }).toList();
       }
       lgr.Logger().d(userList);
