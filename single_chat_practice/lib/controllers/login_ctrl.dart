@@ -28,8 +28,9 @@ class LoginController extends GetxController {
   //just call when you click the sign up button in login page.
   Future<void> register() async {
     UserCredential authResult = await firebaseService.signInWithGoogle();
-    authUser.value.firebaseUser = authResult.user!;
-    await streamChatService.connect(authUser.value);
+    //authUser.value.firebaseUser = authResult.user!;
+    //await streamChatService.connect(authUser.value);
+    await login();
     isLogin.value = true;
   }
 
