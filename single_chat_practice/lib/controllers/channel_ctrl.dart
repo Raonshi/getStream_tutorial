@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:logger/logger.dart' as lgr;
 import 'package:get/get.dart';
 import 'package:single_chat_practice/services/api_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -20,9 +19,6 @@ class ChannelController extends GetxController {
       'userId': message.user!.id.toString(),
       'message': message.text,
     });
-
     dynamic data = await ApiService().post('/custom-command/save', body);
-
-    lgr.Logger().d(data);
   }
 }
