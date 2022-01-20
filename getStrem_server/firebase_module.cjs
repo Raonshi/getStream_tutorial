@@ -40,7 +40,7 @@ class Firebase{
                 'user': user['id'],
             });
             */
-            var save = this.db.collection('save').doc(user['id']).collection('save').doc(date);
+            var save = this.db.collection('save').doc(user['id']).collection('save').doc(text+"_"+date+"_"+i);
             const item = {
                 itemName: {
                     'text': text,

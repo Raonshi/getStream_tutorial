@@ -21,6 +21,7 @@ class ChannelController extends GetxController {
     });
 
     //dynamic data = ApiService().requestCommand('save', body);
-    var data = ApiService().request(type: 'post', action: '/save', body: body);
+    dynamic data =
+        ApiService().request(type: 'post', action: '/save', body: body);
   }
 }

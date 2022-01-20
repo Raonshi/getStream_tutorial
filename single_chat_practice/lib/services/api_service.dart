@@ -1,13 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
 import 'package:logger/logger.dart';
 
-abstract class WebInterface {
-  post(Uri uri, String body);
-}
-
-class ApiService implements WebInterface {
+class ApiService {
   static final ApiService _instance = ApiService.init();
 
   factory ApiService() {
@@ -26,12 +21,6 @@ class ApiService implements WebInterface {
       required String action,
       required String body,
       String? command}) async {
-    /*
-    Uri uri = command == null
-        ? Uri.http(server, '/$action')
-        : Uri.http(server, '/$action', {'type': command});
-        */
-
     Uri uri = Uri.http(server, '/$action');
 
     if (type == 'post') {
@@ -47,41 +36,9 @@ class ApiService implements WebInterface {
   }
 
   //post api operation
-  @override
   Future<http.Response> post(Uri uri, String body) async {
     Map<String, String> headers = {'Content-Type': 'application/json'};
     var response = await http.post(uri, headers: headers, body: body);
     return response;
   }
-
-/*
-  requestToken(String body) async {
-    Uri uri = Uri.http(server, '/token');
-    http.Response response = await post(uri, body);
-
-    if (response.statusCode != 200) {
-      return;
-    }
-
-    dynamic jsonResult = utf8.decode(response.bodyBytes);
-    return json.decode(jsonResult);
-  }
-
-  requestLoginCheck(String body) async {
-    Uri uri = Uri.http(server, '/loginCheck');
-    http.Response response = await post(uri, body);
-
-    if (response.statusCode != 200) {
-      return;
-    }
-
-    dynamic jsonResult = utf8.decode(response.bodyBytes);
-    return json.decode(jsonResult);
-  }
-
-  requestCommand(String command, String body) async {
-    Uri uri = Uri.http(server, '/custom-command', {'type': command});
-    http.Response response = await post(uri, body);
-  }
-  */
 }
