@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:single_chat_practice/etc/auth_user.dart';
 import 'package:single_chat_practice/services/firebase_service.dart';
 import 'package:single_chat_practice/services/stream_chat_service.dart';
+import 'package:logger/logger.dart' as lgr;
 
 class LoginController extends GetxController {
   final isLogin = false.obs;
@@ -14,13 +15,15 @@ class LoginController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    await firebaseService.loginCheck(authUser.value);
+    bool isCheck = await firebaseService.loginCheck(authUser.value);
 
     //if firebase has user's infomation
-    if (isLogin.value) {
+    if (isCheck) {
       authUser.value.firebaseUser = FirebaseAuth.instance.currentUser!;
-      await login();
+      isLogin.value = await login();
     }
+
+    lgr.Logger().d('=====login process done====');
   }
 
   //register your account

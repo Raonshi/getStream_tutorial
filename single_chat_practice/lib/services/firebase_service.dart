@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:single_chat_practice/controllers/login_ctrl.dart';
 import 'package:single_chat_practice/etc/auth_user.dart';
 import 'package:single_chat_practice/services/api_service.dart';
 
@@ -13,20 +12,21 @@ abstract class AuthInterface {
 
 class FirebaseService extends GetxService implements AuthInterface {
   //loginCheck when you start application
-  Future<void> loginCheck(AuthUser authUser) async {
+  Future<bool> loginCheck(AuthUser authUser) async {
     User? user = FirebaseAuth.instance.currentUser;
     String body = json.encode({'email': user!.email});
 
-    var data = await ApiService().requestLoginCheck(body);
+    //var data = await ApiService().requestLoginCheck(body);
+    var data = await ApiService()
+        .request(type: 'post', action: 'login-check', body: body);
 
     if (data['email'] != user.email) {
-      Get.find<LoginController>().isLogin.value = false;
-      return;
+      return false;
     }
 
     authUser.id = data['id'];
     authUser.name = data['name'];
-    Get.find<LoginController>().isLogin.value = true;
+    return true;
   }
 
   //login with google

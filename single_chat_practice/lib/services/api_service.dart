@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import 'package:logger/logger.dart';
@@ -20,7 +19,32 @@ class ApiService implements WebInterface {
   }
 
   //final server = Platform.isAndroid ? '10.0.2.2:4000' : 'localhost:4000';
-  final server = '2e0a-121-134-227-161.ngrok.io';
+  final server = '3428-121-134-227-161.ngrok.io';
+
+  request(
+      {required String type,
+      required String action,
+      required String body,
+      String? command}) async {
+    /*
+    Uri uri = command == null
+        ? Uri.http(server, '/$action')
+        : Uri.http(server, '/$action', {'type': command});
+        */
+
+    Uri uri = Uri.http(server, '/$action');
+
+    if (type == 'post') {
+      http.Response response = await post(uri, body);
+
+      if (response.statusCode != 200) {
+        Logger().d('====Failed : ${response.statusCode}====');
+        return;
+      }
+
+      return json.decode(utf8.decode(response.bodyBytes));
+    }
+  }
 
   //post api operation
   @override
@@ -30,6 +54,7 @@ class ApiService implements WebInterface {
     return response;
   }
 
+/*
   requestToken(String body) async {
     Uri uri = Uri.http(server, '/token');
     http.Response response = await post(uri, body);
@@ -58,4 +83,5 @@ class ApiService implements WebInterface {
     Uri uri = Uri.http(server, '/custom-command', {'type': command});
     http.Response response = await post(uri, body);
   }
+  */
 }

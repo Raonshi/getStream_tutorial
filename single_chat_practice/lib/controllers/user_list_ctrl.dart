@@ -14,7 +14,13 @@ class UserListController extends GetxController {
     final client = loginController.streamChatService.client.value;
     loadingData.value = true;
 
-    await client.queryUsers(filter: const Filter.empty()).then((value) {
+    await client.queryUsers(
+      filter: Filter.and([
+        //나를 제외한 모든 유저 표시
+        Filter.notEqual('id', StreamChat.of(context).currentUser!.id),
+      ]),
+      sort: const [SortOption('last_message_at')],
+    ).then((value) {
       if (value.users.isNotEmpty) {
         userList.value = value.users.where((element) {
           return element.id != client.state.currentUser!.id;

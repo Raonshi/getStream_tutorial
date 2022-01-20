@@ -16,42 +16,39 @@ class Firebase{
 
     //put all user into firestore
     saveData = async (data) => {
-        console.log(data);
-        try{
-            for(var i = 0; i < data.length; i++){
-                var message = data[i]['message'];
-                var text = message['text'];
-                var date = message['created_at'];
+        //console.log(data[0])
+        for(var i = 0; i < data.length; i++){
+            var message = data[i]['message'];
+            var text = message['text'];
+            var date = message['created_at'];
 
-                var user = message['user'];
-                console.log(user);
+            var user = message['user'];
+            console.log('===================');
+            console.log(user);
+            console.log('===================');
+            console.log(text);
+            console.log('===================');
+            console.log(date);
 
-                /*
-                //저장일자는 메시지가 전송된 시간으로 저장해야함
-                //지금은 코드가 수행되는 시점의 현재시간으로 되어 있음.
-                var save = this.db.collection(user['id']).doc('save_'+date);
-                await save.set({
-                  'text': text,
-                  'date': date,
-                  'user': user['id'],
-                });
-                */
-
-                var save = this.db.collection('save').doc(user['id']);
-                const itemName = 'save_'+date;
-                const data = {
-                    itemName: {
-                        'text': text,
-                        'date': date,
-                        'user': user['id'],
-                    }
-                };
-                await save.set(data);
-            }
-            return true;
-        }
-        catch(e){
-            return false;
+            /*
+            //저장일자는 메시지가 전송된 시간으로 저장해야함
+            //지금은 코드가 수행되는 시점의 현재시간으로 되어 있음.
+            var save = this.db.collection(user['id']).doc('save_'+date);
+            await save.set({
+                'text': text,
+                'date': date,
+                'user': user['id'],
+            });
+            */
+            var save = this.db.collection('save').doc(user['id']).collection('save').doc(date);
+            const item = {
+                itemName: {
+                    'text': text,
+                    'date': date,
+                    'user': user['id'],
+                }
+            };
+            await save.set(item);
         }
     }
 

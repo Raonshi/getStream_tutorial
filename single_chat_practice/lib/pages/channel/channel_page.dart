@@ -20,10 +20,12 @@ class ChannelPage extends StatelessWidget {
               ),
             ),
             MessageInput(
+                /*
               onMessageSent: (message) async {
                 await controller.sendCommand(message);
               },
-            ),
+              */
+                ),
           ],
         ),
       ),

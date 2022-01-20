@@ -19,14 +19,8 @@ class ChannelController extends GetxController {
       'userId': message.user!.id.toString(),
       'message': message.text,
     });
-    /*
-    dynamic data = await ApiService().post(
-      '/custom-command',
-      body,
-      command: 'save',
-    );
-    */
 
-    dynamic data = ApiService().requestCommand('save', body);
+    //dynamic data = ApiService().requestCommand('save', body);
+    var data = ApiService().request(type: 'post', action: '/save', body: body);
   }
 }
