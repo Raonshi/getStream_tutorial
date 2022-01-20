@@ -31,6 +31,8 @@ class ApiService {
         return;
       }
 
+      Logger().d(utf8.decode(response.bodyBytes));
+
       return json.decode(utf8.decode(response.bodyBytes));
     }
   }
