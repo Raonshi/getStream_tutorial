@@ -21,14 +21,17 @@ class LoginPage extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: TextField(
-                        decoration: const InputDecoration(
-                          labelText: 'ID',
-                          border: OutlineInputBorder(),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            labelText: 'ID',
+                            border: OutlineInputBorder(),
+                          ),
+                          onChanged: (value) {
+                            controller.authUser.value.id = value;
+                          },
                         ),
-                        onChanged: (value) {
-                          controller.authUser.value.id = value;
-                        },
                       ),
                     ),
                   ],
@@ -37,14 +40,17 @@ class LoginPage extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: TextField(
-                        decoration: const InputDecoration(
-                          labelText: 'Name',
-                          border: OutlineInputBorder(),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            labelText: 'Name',
+                            border: OutlineInputBorder(),
+                          ),
+                          onChanged: (value) {
+                            controller.authUser.value.name = value;
+                          },
                         ),
-                        onChanged: (value) {
-                          controller.authUser.value.name = value;
-                        },
                       ),
                     ),
                   ],
