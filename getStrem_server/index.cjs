@@ -51,5 +51,6 @@ app.post('/save', async (req, res) => {
     const cid = req.body['message']['cid'];
     const text = req.body['message']['args'];
     const data = await chat.client.search({cid: cid}, {text: { "$autocomplete": text }});
-    await fire.saveData(data.results);
+    var result = await fire.saveData(data.results);
+    res.status(result ? 200 : 500).send({'result': result});
 })

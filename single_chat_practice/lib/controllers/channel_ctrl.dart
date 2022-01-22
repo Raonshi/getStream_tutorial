@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:single_chat_practice/services/api_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+import 'package:logger/logger.dart' as lgr;
 
 class ChannelController extends GetxController {
   //send custom command
@@ -22,6 +23,8 @@ class ChannelController extends GetxController {
 
     //dynamic data = ApiService().requestCommand('save', body);
     dynamic data =
-        ApiService().request(type: 'post', action: '/save', body: body);
+        ApiService().request(type: 'post', action: 'save', body: body);
+
+    lgr.Logger().d("==============================$data");
   }
 }
