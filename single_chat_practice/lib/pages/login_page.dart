@@ -89,13 +89,16 @@ class LoginPage extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth <= 800) {
-          return LoginInputWidget();
-        } else if (constraints.maxWidth > 800 && constraints.maxWidth <= 1280) {
-          return const Center(child: Text('Width is 1280'));
-        } else {
-          return const Center(child: Text('Width is max'));
-        }
+        return Center(
+          child: Card(
+            child: Column(
+              children: const [
+                Text('id input'),
+                Text('email input'),
+              ],
+            ),
+          ),
+        );
       },
     );
   }

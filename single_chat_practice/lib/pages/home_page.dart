@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:single_chat_practice/controllers/home_ctrl.dart';
 import 'package:single_chat_practice/controllers/login_ctrl.dart';
+import 'package:single_chat_practice/controllers/web_test_ctrl.dart';
 import 'package:single_chat_practice/pages/channel/channel_list_page.dart';
 import 'package:single_chat_practice/pages/channel/channel_page.dart';
 import 'package:single_chat_practice/pages/setting_page.dart';
 import 'package:single_chat_practice/pages/user/user_list_page.dart';
 import 'package:single_chat_practice/pages/user/user_select_page.dart';
 import 'package:single_chat_practice/services/platfrom_service.dart';
-import 'package:single_chat_practice/services/stream_chat_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
-import 'package:single_chat_practice/controllers/user_list_ctrl.dart' as user;
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
   final homeController = Get.put(HomeController());
-  final userController = Get.put(user.UserListController());
+  final webController = Get.put(WebTestController());
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +74,6 @@ class HomePage extends StatelessWidget {
   }
 
   Widget buildToWeb(BuildContext context) {
-    late Channel channel;
     return Scaffold(
       //Header
       appBar: AppBar(title: Obx(() => Text(homeController.appBarText.value))),
@@ -97,28 +94,24 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                   sort: const [SortOption('last_message_at')],
-                  onUserTap: (user, _) => Get.defaultDialog(
-                    title: user.name,
-                    content: const Text("Start Chat"),
-                    onCancel: () {},
-                    onConfirm: () async {
-                      channel =
-                          await userController.createChannel(user, context);
-                    },
-                  ),
+                  onUserTap: (user, _) async {
+                    await webController.createChannel(user, context);
+                  },
                   userWidget: ChannelPage(),
                 ),
               ),
             ),
             Expanded(
               flex: 4,
-              child: StreamChannel(
-                child: StreamChatTheme(
-                  data: StreamChatThemeData.light(),
-                  child: ChannelPage(),
-                ),
-                channel: channel,
-              ),
+              child: webController.channelList.length <= 0
+                  ? const Text(
+                      'Select Your Friend',
+                      textAlign: TextAlign.center,
+                    )
+                  : StreamChannel(
+                      child: ChannelPage(),
+                      channel: webController.findMyChannel(),
+                    ),
             ),
           ],
         ),
