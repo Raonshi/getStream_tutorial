@@ -9,7 +9,6 @@ class UserListController extends GetxController {
   RxBool loadingData = true.obs;
   RxList userList = [].obs;
   final loginController = Get.find<LoginController>();
-
   void fetchUsers(BuildContext context) async {
     final client = loginController.streamChatService.client.value;
     loadingData.value = true;
