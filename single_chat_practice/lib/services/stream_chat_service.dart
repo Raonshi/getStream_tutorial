@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:single_chat_practice/etc/auth_user.dart';
 import 'package:single_chat_practice/services/notification_service.dart';
@@ -7,6 +8,7 @@ import 'api_service.dart';
 
 class StreamChatService extends GetxService {
   final client = StreamChatClient('grdysyd7gzfn', logLevel: Level.INFO).obs;
+  final selectedUser = <User>{}.obs;
 
   //connect client
   Future<User> connect(AuthUser authUser) async {
@@ -49,5 +51,31 @@ class StreamChatService extends GetxService {
   //dispose
   Future<void> disconnect() async {
     await client.value.disconnectUser();
+  }
+
+  Future<Channel> createChannel(BuildContext context) async {
+    var client = Get.find<StreamChatService>().client.value;
+    var currentUser = client.state.currentUser;
+
+    late Channel channel;
+
+    List<String> members = [];
+    members.add(currentUser!.id);
+
+    for (int i = 0; i < selectedUser.length; i++) {
+      User user = selectedUser.elementAt(i);
+      members.add(user.id);
+    }
+
+    await client
+        .channel('messaging', extraData: {'members': members})
+        .create()
+        .then((response) {
+          channel = Channel.fromState(client, response);
+          channel.watch();
+        });
+
+    selectedUser.clear();
+    return channel;
   }
 }

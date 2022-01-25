@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:single_chat_practice/controllers/chat_select_ctrl.dart';
 import 'package:single_chat_practice/controllers/login_ctrl.dart';
 import 'package:single_chat_practice/pages/channel/channel_page.dart';
+import 'package:single_chat_practice/services/stream_chat_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class UserSelectPage extends StatelessWidget {
   UserSelectPage({Key? key}) : super(key: key);
-  final controller = Get.put(UserSelectController());
-
+  final streamCtrl = Get.find<StreamChatService>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,11 +24,11 @@ class UserSelectPage extends StatelessWidget {
                     'id', Get.find<LoginController>().authUser.value.id),
               ]),
               sort: const [SortOption('last_message_at')],
-              selectedUsers: controller.selectedUser.value,
+              selectedUsers: streamCtrl.selectedUser.value,
               onUserTap: (user, _) {
-                bool isAdd = controller.selectedUser.add(user);
+                bool isAdd = streamCtrl.selectedUser.add(user);
                 if (!isAdd) {
-                  controller.selectedUser.remove(user);
+                  streamCtrl.selectedUser.remove(user);
                 }
               },
               userWidget: ChannelPage(),
@@ -40,7 +39,7 @@ class UserSelectPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.question_answer_rounded),
         onPressed: () async {
-          Channel channel = await controller.createChannel(context);
+          Channel channel = await streamCtrl.createChannel(context);
           Get.off(
             () => StreamChannel(
               child: StreamChatTheme(

@@ -34,26 +34,4 @@ class UserListController extends GetxController {
       lgr.Logger().d(error);
     });
   }
-
-  Future<Channel> createChannel(User user, BuildContext context) async {
-    var client = Get.find<StreamChatService>().client.value;
-    var currentUser = client.state.currentUser;
-
-    late Channel channel;
-
-    await client
-        .channel('messaging', extraData: {
-          'members': [currentUser!.id, user.id]
-        })
-        .create()
-        .then((response) {
-          channel = Channel.fromState(client, response);
-          channel.watch();
-        })
-        .catchError((error) {
-          lgr.Logger().d(error);
-        });
-
-    return channel;
-  }
 }

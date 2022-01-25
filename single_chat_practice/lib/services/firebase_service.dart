@@ -47,7 +47,6 @@ class FirebaseService extends GetxService implements AuthInterface {
 
     UserCredential authResult = await auth.signInWithCredential(credential);
     User user = authResult.user!;
-
     return user;
   }
 
