@@ -2,18 +2,22 @@ const Firebase = require('./firebase_module.cjs');
 const Chat = require('./stream_module.cjs');
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors())
 
 const fire = Firebase.firebase;
 const chat = Chat.chat;
 
 //server init
 app.listen(4000, async ()=> {
+    
     await chat.client.updateAppSettings({ 
-        custom_action_handler_url: "http://3428-121-134-227-161.ngrok.io/save", 
+        custom_action_handler_url: "http://def0-121-134-227-161.ngrok.io/save", 
     });
+    
     console.log('App listening on port 4000!');
 });
 

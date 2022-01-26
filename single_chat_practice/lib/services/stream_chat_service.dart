@@ -1,12 +1,18 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:single_chat_practice/etc/auth_user.dart';
 import 'package:single_chat_practice/services/notification_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 import 'api_service.dart';
+import 'package:logger/logger.dart' as lgr;
 
 class StreamChatService extends GetxService {
   final client = StreamChatClient('grdysyd7gzfn', logLevel: Level.INFO).obs;
+  final selectedUser = <User>{}.obs;
+  final loadingData = true.obs;
+  final userList = [].obs;
 
   //connect client
   Future<User> connect(AuthUser authUser) async {
@@ -49,5 +55,61 @@ class StreamChatService extends GetxService {
   //dispose
   Future<void> disconnect() async {
     await client.value.disconnectUser();
+  }
+
+  String getChannelMembers(Channel channel, int index) {
+    lgr.Logger().d("asdasdasdasdasdasdasdasdasd \n ${channel.name}");
+    if (channel.name == 'null') {
+      return 'Channel_$index';
+    } else {
+      lgr.Logger().d(channel.name);
+      return channel.name!;
+    }
+  }
+
+  Future<Channel> createChannel(BuildContext context) async {
+    var client = Get.find<StreamChatService>().client.value;
+    var currentUser = client.state.currentUser;
+
+    late Channel channel;
+
+    List<String> members = [];
+    members.add(currentUser!.id);
+
+    for (int i = 0; i < selectedUser.length; i++) {
+      User user = selectedUser.elementAt(i);
+      members.add(user.id);
+    }
+
+    await client
+        .channel('messaging', extraData: {'members': members})
+        .create()
+        .then((response) {
+          channel = Channel.fromState(client, response);
+          channel.watch();
+        });
+
+    selectedUser.clear();
+    return channel;
+  }
+
+  void fetchUsers(BuildContext context) async {
+    loadingData.value = true;
+    await client.value.queryUsers(
+      filter: Filter.and([
+        //나를 제외한 모든 유저 표시
+        Filter.notEqual('id', StreamChat.of(context).currentUser!.id),
+      ]),
+      sort: const [SortOption('last_message_at')],
+    ).then((value) {
+      if (value.users.isNotEmpty) {
+        userList.value = value.users.where((element) {
+          return element.id != client.value.state.currentUser!.id;
+        }).toList();
+      }
+      loadingData.value = false;
+    }).catchError((error) {
+      loadingData.value = false;
+    });
   }
 }
