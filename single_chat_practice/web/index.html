@@ -29,6 +29,10 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
+  <!-- My Web -->
+  <meta name="google-signin-client_id" content="963875283913-msrbsss7hmc5ncgbgh9pfc3v54sk0v1r.apps.googleusercontent.com">
+
+
   <title>single_chat_practice</title>
   <link rel="manifest" href="manifest.json">
 </head>
@@ -36,6 +40,12 @@
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.2/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.2/firebase-auth.js"></script>
+
+
+  <script src="main.dart.js" type="application/javascript"></script>
   <script>
     var serviceWorkerVersion = null;
     var scriptLoaded = false;

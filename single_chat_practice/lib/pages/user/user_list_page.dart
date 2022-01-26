@@ -6,7 +6,6 @@ import 'package:single_chat_practice/services/stream_chat_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class UserListPage extends StatelessWidget {
-  //final controller = Get.put(user_ctrl.UserListController());
   UserListPage({Key? key}) : super(key: key);
   final streamService = Get.find<StreamChatService>();
 

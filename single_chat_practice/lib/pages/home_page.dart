@@ -1,25 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:single_chat_practice/controllers/channel_ctrl.dart';
 import 'package:single_chat_practice/controllers/home_ctrl.dart';
+import 'package:single_chat_practice/controllers/login_ctrl.dart';
+import 'package:single_chat_practice/controllers/web_test_ctrl.dart';
 import 'package:single_chat_practice/pages/channel/channel_list_page.dart';
+import 'package:single_chat_practice/pages/channel/channel_page.dart';
 import 'package:single_chat_practice/pages/setting_page.dart';
 import 'package:single_chat_practice/pages/user/user_list_page.dart';
 import 'package:single_chat_practice/pages/user/user_select_page.dart';
+import 'package:single_chat_practice/services/platfrom_service.dart';
+import 'package:single_chat_practice/widgets/web/channel_list_widget.dart';
+import 'package:single_chat_practice/widgets/web/top_bar.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+import 'package:logger/logger.dart' as lgr;
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
-  final controller = Get.put(HomeController());
+  final homeController = Get.put(HomeController());
+  final webController = Get.put(WebTestController());
 
   @override
   Widget build(BuildContext context) {
+    return Get.find<PlatformService>().isWeb
+        ? buildToWeb(context)
+        : buildToMobile(context);
+  }
+
+  Widget buildToMobile(BuildContext context) {
     return Scaffold(
       //Header
-      appBar: AppBar(title: Obx(() => Text(controller.appBarText.value))),
+      appBar: AppBar(title: Obx(() => Text(homeController.appBarText.value))),
 
       //Body
       body: SafeArea(
         child: PageView(
-          controller: controller.pageController.value,
+          controller: homeController.pageController.value,
           physics: const NeverScrollableScrollPhysics(),
           children: <Widget>[
             UserListPage(),
@@ -32,7 +48,7 @@ class HomePage extends StatelessWidget {
       //Bottom Navigator bar
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
-          currentIndex: controller.pageSelected.value,
+          currentIndex: homeController.pageSelected.value,
           selectedItemColor: Colors.blueAccent,
           items: const [
             BottomNavigationBarItem(
@@ -48,7 +64,7 @@ class HomePage extends StatelessWidget {
               label: 'Settings',
             ),
           ],
-          onTap: (value) => controller.pageChange(value),
+          onTap: (value) => homeController.pageChange(value),
         ),
       ),
 
@@ -58,6 +74,47 @@ class HomePage extends StatelessWidget {
         onPressed: () => Get.to(() => UserSelectPage()),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+
+  Widget buildToWeb(BuildContext context) {
+    webController.initChannelList();
+
+    return Scaffold(
+      //Header
+      appBar: AppBar(title: TopBar()),
+
+      //Body
+      body: SafeArea(
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              flex: 2,
+              child: ChannelListWidget(),
+            ),
+            Expanded(
+              flex: 4,
+              child: Obx(
+                () {
+                  try {
+                    final channelController = Get.find<ChannelController>(
+                        tag: webController.currentChannelCid.value);
+                    return StreamChannel(
+                      channel: channelController.channel,
+                      child: ChannelPage(),
+                    );
+                  } catch (e) {
+                    return const Text(
+                      'Click Your Chat',
+                      textAlign: TextAlign.center,
+                    );
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

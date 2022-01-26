@@ -23,18 +23,7 @@ void main() {
       );
 
       when(mock.signInWithGoogle()).thenAnswer((_) async {
-        final googleSignIn = MockGoogleSignIn();
-        final signinAccount = await googleSignIn.signIn();
-        final googleAuth = await signinAccount!.authentication;
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
-
-        // Sign in.
-        final auth = MockFirebaseAuth(mockUser: mockUser);
-        final result = await auth.signInWithCredential(credential);
-        return result;
+        return await testSignIn(mockUser);
       });
 
       for (int i = 0; i < fakeRegistedAccounts.length; i++) {
@@ -61,18 +50,7 @@ void main() {
       );
 
       when(mock.signInWithGoogle()).thenAnswer((_) async {
-        final googleSignIn = MockGoogleSignIn();
-        final signinAccount = await googleSignIn.signIn();
-        final googleAuth = await signinAccount!.authentication;
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
-
-        // Sign in.
-        final auth = MockFirebaseAuth(mockUser: mockUser);
-        final result = await auth.signInWithCredential(credential);
-        return result;
+        return await testSignIn(mockUser);
       });
 
       for (int i = 0; i < fakeRegistedAccounts.length; i++) {
@@ -87,6 +65,21 @@ void main() {
       expect(testResult, false);
     });
   });
+}
+
+Future<UserCredential> testSignIn(MockUser mockUser) async {
+  final googleSignIn = MockGoogleSignIn();
+  final signinAccount = await googleSignIn.signIn();
+  final googleAuth = await signinAccount!.authentication;
+  final AuthCredential credential = GoogleAuthProvider.credential(
+    accessToken: googleAuth.accessToken,
+    idToken: googleAuth.idToken,
+  );
+
+  // Sign in.
+  final auth = MockFirebaseAuth(mockUser: mockUser);
+  final result = await auth.signInWithCredential(credential);
+  return result;
 }
 
 List<MockUser> fakeRegistedAccounts = [

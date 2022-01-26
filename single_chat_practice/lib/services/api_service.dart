@@ -18,8 +18,7 @@ class ApiService {
   request(
       {required String type,
       required String action,
-      required String body,
-      String? command}) async {
+      required String body}) async {
     Uri uri = Uri.http(server, '/$action');
 
     if (type == 'post') {
@@ -38,7 +37,9 @@ class ApiService {
 
   //post api operation
   Future<http.Response> post(Uri uri, String body) async {
-    Map<String, String> headers = {'Content-Type': 'application/json'};
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+    };
     var response = await http.post(uri, headers: headers, body: body);
     return response;
   }
