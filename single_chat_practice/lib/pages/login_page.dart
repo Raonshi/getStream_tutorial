@@ -28,48 +28,13 @@ class LoginPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const Divider(),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: TextField(
-                          decoration: const InputDecoration(
-                            labelText: 'ID',
-                            border: OutlineInputBorder(),
-                          ),
-                          onChanged: (value) {
-                            controller.authUser.value.id = value;
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                _buildLoginInputWidget('ID'),
                 const Divider(),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: TextField(
-                          decoration: const InputDecoration(
-                            labelText: 'Name',
-                            border: OutlineInputBorder(),
-                          ),
-                          onChanged: (value) {
-                            controller.authUser.value.name = value;
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                _buildLoginInputWidget('Name'),
                 const Divider(),
                 ElevatedButton(
                   onPressed: () async {
                     await controller.register();
-
                     if (controller.isLogin.value) {
                       Get.off(HomePage());
                     }
@@ -118,20 +83,27 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget _buildLoginInputWidget(String label) {
-    return Expanded(
-      flex: 2,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10.0,
-          vertical: 5.0,
-        ),
-        child: TextField(
-          decoration: InputDecoration(
-            labelText: label,
-            border: const OutlineInputBorder(),
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10.0,
+              vertical: 5.0,
+            ),
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: label,
+                border: const OutlineInputBorder(),
+              ),
+              onChanged: (value) {
+                controller.authUser.value.id = value;
+              },
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

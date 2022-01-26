@@ -78,11 +78,12 @@ class Chat{
 
         await this.client.updateChannelType('messaging', {
             commands: ['save'],
-        });
-
-        await chat.client.updateAppSettings({ 
+        });        
+        /*
+        await this.client.updateAppSettings({ 
             custom_action_handler_url: "http://def0-121-134-227-161.ngrok.io/"+commandName, 
         });
+        */
 
         console.log(type);
     }
