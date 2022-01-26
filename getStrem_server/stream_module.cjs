@@ -81,7 +81,7 @@ class Chat{
         });
 
         await chat.client.updateAppSettings({ 
-            custom_action_handler_url: "http://3428-121-134-227-161.ngrok.io/"+commandName, 
+            custom_action_handler_url: "http://def0-121-134-227-161.ngrok.io/"+commandName, 
         });
 
         console.log(type);
