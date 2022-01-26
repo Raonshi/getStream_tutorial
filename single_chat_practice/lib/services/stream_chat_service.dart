@@ -9,6 +9,8 @@ import 'api_service.dart';
 class StreamChatService extends GetxService {
   final client = StreamChatClient('grdysyd7gzfn', logLevel: Level.INFO).obs;
   final selectedUser = <User>{}.obs;
+  final loadingData = true.obs;
+  final userList = [].obs;
 
   //connect client
   Future<User> connect(AuthUser authUser) async {
@@ -77,5 +79,25 @@ class StreamChatService extends GetxService {
 
     selectedUser.clear();
     return channel;
+  }
+
+  void fetchUsers(BuildContext context) async {
+    loadingData.value = true;
+    await client.value.queryUsers(
+      filter: Filter.and([
+        //나를 제외한 모든 유저 표시
+        Filter.notEqual('id', StreamChat.of(context).currentUser!.id),
+      ]),
+      sort: const [SortOption('last_message_at')],
+    ).then((value) {
+      if (value.users.isNotEmpty) {
+        userList.value = value.users.where((element) {
+          return element.id != client.value.state.currentUser!.id;
+        }).toList();
+      }
+      loadingData.value = false;
+    }).catchError((error) {
+      loadingData.value = false;
+    });
   }
 }
