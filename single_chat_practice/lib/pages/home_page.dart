@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:single_chat_practice/controllers/channel_ctrl.dart';
 import 'package:single_chat_practice/controllers/home_ctrl.dart';
 import 'package:single_chat_practice/controllers/login_ctrl.dart';
 import 'package:single_chat_practice/controllers/web_test_ctrl.dart';
@@ -9,7 +10,10 @@ import 'package:single_chat_practice/pages/setting_page.dart';
 import 'package:single_chat_practice/pages/user/user_list_page.dart';
 import 'package:single_chat_practice/pages/user/user_select_page.dart';
 import 'package:single_chat_practice/services/platfrom_service.dart';
+import 'package:single_chat_practice/widgets/web/channel_list_widget.dart';
+import 'package:single_chat_practice/widgets/web/top_bar.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+import 'package:logger/logger.dart' as lgr;
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -74,9 +78,11 @@ class HomePage extends StatelessWidget {
   }
 
   Widget buildToWeb(BuildContext context) {
+    webController.initChannelList();
+
     return Scaffold(
       //Header
-      appBar: AppBar(title: Obx(() => Text(homeController.appBarText.value))),
+      appBar: AppBar(title: TopBar()),
 
       //Body
       body: SafeArea(
@@ -84,34 +90,20 @@ class HomePage extends StatelessWidget {
           children: <Widget>[
             Expanded(
               flex: 2,
-              child: UsersBloc(
-                child: UserListView(
-                  filter: Filter.and(
-                    [
-                      //나를 제외한 모든 유저 표시
-                      Filter.notEqual(
-                          'id', Get.find<LoginController>().authUser.value.id),
-                    ],
-                  ),
-                  sort: const [SortOption('last_message_at')],
-                  onUserTap: (user, _) async {
-                    await webController.createChannel(user, context);
-                  },
-                  userWidget: ChannelPage(),
-                ),
-              ),
+              child: ChannelListWidget(),
             ),
             Expanded(
               flex: 4,
-              child: webController.channelList.length <= 0
-                  ? const Text(
-                      'Select Your Friend',
-                      textAlign: TextAlign.center,
-                    )
-                  : StreamChannel(
-                      child: ChannelPage(),
-                      channel: webController.findMyChannel(),
-                    ),
+              child: Obx(
+                () {
+                  final channelController = Get.find<ChannelController>(
+                      tag: webController.currentChannelCid.value);
+                  return StreamChannel(
+                    channel: channelController.channel,
+                    child: ChannelPage(),
+                  );
+                },
+              ),
             ),
           ],
         ),

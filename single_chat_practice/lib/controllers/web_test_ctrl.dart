@@ -6,6 +6,20 @@ import 'package:logger/logger.dart' as lgr;
 
 class WebTestController extends GetxController {
   final channelList = <Channel>[].obs;
+  final currentChannelCid = ''.obs;
+
+  void initChannelList() async {
+    var client = Get.find<StreamChatService>().client.value;
+    var currentUser = client.state.currentUser;
+
+    channelList.value = client.queryChannels(
+      filter: Filter.in_('members', [currentUser!.id]),
+    ) as List<Channel>;
+  }
+
+  void selectChannel(int index) {
+    Channel channel = channelList[0];
+  }
 
   Future<void> createChannel(User user, BuildContext context) async {
     var client = Get.find<StreamChatService>().client.value;

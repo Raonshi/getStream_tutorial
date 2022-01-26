@@ -6,6 +6,7 @@ import 'package:single_chat_practice/pages/home_page.dart';
 import 'package:single_chat_practice/pages/login_page.dart';
 import 'package:single_chat_practice/services/firebase_service.dart';
 import 'package:single_chat_practice/services/notification_service.dart';
+import 'package:single_chat_practice/services/platfrom_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 void main() async {
@@ -29,7 +30,15 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: Obx(
-        () => loginController.isLogin.value ? HomePage() : LoginPage(),
+        () {
+          if (Get.find<PlatformService>().isWeb) {
+            return loginController.isLogin.value
+                ? HomePage()
+                : const Center(child: CircularProgressIndicator());
+          } else {
+            return loginController.isLogin.value ? HomePage() : LoginPage();
+          }
+        },
       ),
       builder: (context, child) => StreamChat(
         child: child,

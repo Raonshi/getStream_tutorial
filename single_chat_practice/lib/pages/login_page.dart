@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:single_chat_practice/controllers/login_ctrl.dart';
 import 'package:single_chat_practice/pages/home_page.dart';
 import 'package:single_chat_practice/services/platfrom_service.dart';
-import 'package:single_chat_practice/widgets/web/login_widget.dart';
+import 'package:single_chat_practice/widgets/web/top_bar.dart';
+import 'package:single_chat_practice/widgets/web/channel_list_widget.dart';
+import 'package:single_chat_practice/widgets/web/web_channel_widget.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -11,9 +13,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Get.find<PlatformService>().isWeb
-        ? buildToWeb(context)
-        : buildToMobile(context);
+    // return buildToWeb(context);
+    return buildToMobile(context);
   }
 
   // Mobile UI build
@@ -85,21 +86,26 @@ class LoginPage extends StatelessWidget {
 
   // Web UI build
   Widget buildToWeb(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Center(
-          child: Card(
-            child: Column(
-              children: const [
-                Text('id input'),
-                Text('email input'),
-              ],
-            ),
-          ),
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: const TopBar(),
+      ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: ChannelListWidget(),
+              ),
+              Expanded(
+                flex: 4,
+                child: WebChannelWidget(),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

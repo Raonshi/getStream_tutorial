@@ -14,7 +14,7 @@ class ApiService {
   }
 
   //final server = Platform.isAndroid ? '10.0.2.2:4000' : 'localhost:4000';
-  final server = 'be82-121-134-227-161.ngrok.io';
+  final server = 'def0-121-134-227-161.ngrok.io';
 
   request(
       {required String type,

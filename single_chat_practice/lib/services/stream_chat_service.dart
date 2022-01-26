@@ -2,8 +2,9 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:single_chat_practice/etc/auth_user.dart';
 import 'package:single_chat_practice/services/notification_service.dart';
-import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 import 'api_service.dart';
+import 'package:logger/logger.dart' as lgr;
 
 class StreamChatService extends GetxService {
   final client = StreamChatClient('grdysyd7gzfn', logLevel: Level.INFO).obs;
@@ -49,5 +50,15 @@ class StreamChatService extends GetxService {
   //dispose
   Future<void> disconnect() async {
     await client.value.disconnectUser();
+  }
+
+  String getChannelMembers(Channel channel, int index) {
+    lgr.Logger().d("asdasdasdasdasdasdasdasdasd \n ${channel.name}");
+    if (channel.name == 'null') {
+      return 'Channel_$index';
+    } else {
+      lgr.Logger().d(channel.name);
+      return channel.name!;
+    }
   }
 }
