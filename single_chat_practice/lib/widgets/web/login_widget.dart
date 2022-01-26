@@ -9,19 +9,35 @@ class LoginInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Spacer(),
-        _buildLoginInputWidget('ID'),
-        const Spacer(),
-        _buildLoginInputWidget('NAME'),
-        const Spacer(),
-        ElevatedButton(
-          onPressed: () {},
-          child: Text('Login'),
+    return Scaffold(
+      backgroundColor: Colors.black26,
+      body: Center(
+        child: SizedBox(
+          width: 500,
+          height: 300,
+          child: Card(
+            child: Column(
+              children: [
+                const Spacer(),
+                _buildLoginInputWidget('ID'),
+                const Spacer(),
+                _buildLoginInputWidget('NAME'),
+                const Spacer(),
+                ElevatedButton(
+                  onPressed: () async {
+                    await controller.register();
+                    if (controller.isLogin.value) {
+                      Get.off(HomePage());
+                    }
+                  },
+                  child: Text('Login'),
+                ),
+                const Spacer(),
+              ],
+            ),
+          ),
         ),
-        const Spacer(),
-      ],
+      ),
     );
   }
 

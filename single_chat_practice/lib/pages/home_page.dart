@@ -96,12 +96,19 @@ class HomePage extends StatelessWidget {
               flex: 4,
               child: Obx(
                 () {
-                  final channelController = Get.find<ChannelController>(
-                      tag: webController.currentChannelCid.value);
-                  return StreamChannel(
-                    channel: channelController.channel,
-                    child: ChannelPage(),
-                  );
+                  try {
+                    final channelController = Get.find<ChannelController>(
+                        tag: webController.currentChannelCid.value);
+                    return StreamChannel(
+                      channel: channelController.channel,
+                      child: ChannelPage(),
+                    );
+                  } catch (e) {
+                    return const Text(
+                      'Click Your Chat',
+                      textAlign: TextAlign.center,
+                    );
+                  }
                 },
               ),
             ),

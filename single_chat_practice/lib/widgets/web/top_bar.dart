@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:single_chat_practice/controllers/login_ctrl.dart';
 
 class TopBar extends StatelessWidget {
   const TopBar({Key? key}) : super(key: key);
@@ -15,7 +17,14 @@ class TopBar extends StatelessWidget {
         const Spacer(),
         IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
         const Spacer(),
-        IconButton(onPressed: () {}, icon: Icon(Icons.login)),
+        IconButton(
+            onPressed: () {
+              final loginController = Get.find<LoginController>();
+              loginController.isLogin.value
+                  ? loginController.logout()
+                  : Get.defaultDialog(title: 'Log in');
+            },
+            icon: Icon(Icons.login)),
         const Spacer(flex: 2),
       ],
     );
