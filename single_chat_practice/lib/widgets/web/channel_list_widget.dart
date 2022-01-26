@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:single_chat_practice/controllers/channel_ctrl.dart';
 import 'package:single_chat_practice/controllers/web_test_ctrl.dart';
-import 'package:single_chat_practice/pages/channel/channel_page.dart';
 import 'package:single_chat_practice/services/stream_chat_service.dart';
-import 'package:single_chat_practice/widgets/web/web_channel_widget.dart';
 import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
-import 'package:logger/logger.dart' as lgr;
 
 class ChannelListWidget extends StatelessWidget {
   ChannelListWidget({Key? key}) : super(key: key);
@@ -21,7 +18,7 @@ class ChannelListWidget extends StatelessWidget {
               'members', [streamService.client.value.state.currentUser!.id]),
         ]),
         errorBuilder: (BuildContext context, Object error) {
-          return Center(child: Text('Error'));
+          return const Center(child: Text('Error'));
         },
         emptyBuilder: (BuildContext context) {
           return const Center(child: Text('You don\'t have channel'));
@@ -37,13 +34,15 @@ class ChannelListWidget extends StatelessWidget {
               final itemName = channelList[index].name ?? 'Channel_$index';
               return Card(
                 child: ListTile(
-                  leading: Icon(Icons.person),
+                  leading: const Icon(
+                    Icons.chat_bubble,
+                  ),
                   title: Text(
                     itemName,
                     maxLines: 1,
                     overflow: TextOverflow.clip,
                   ),
-                  subtitle: Text(
+                  subtitle: const Text(
                     'Members',
                     maxLines: 1,
                     overflow: TextOverflow.clip,

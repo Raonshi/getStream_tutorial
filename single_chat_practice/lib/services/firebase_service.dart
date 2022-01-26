@@ -45,9 +45,6 @@ class FirebaseService extends GetxService implements AuthInterface {
     authUser.id = data['id'];
     authUser.name = data['name'];
 
-    Logger().d('asdfasdfasdfdkfdkldjlsajdlfjal;ksdjfal;jksdf${authUser.id}');
-    Logger().d('asdfasdfasdfdkfdkldjlsajdlfjal;ksdjfal;jksdf${authUser.name}');
-
     return true;
   }
 

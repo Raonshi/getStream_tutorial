@@ -11,20 +11,30 @@ class TopBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Spacer(flex: 2),
-        IconButton(onPressed: () {}, icon: Icon(Icons.people)),
-        const Spacer(),
-        IconButton(onPressed: () {}, icon: Icon(Icons.list_alt)),
-        const Spacer(),
-        IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
+        IconButton(
+          icon: const Icon(Icons.people),
+          onPressed: () {},
+        ),
         const Spacer(),
         IconButton(
-            onPressed: () {
-              final loginController = Get.find<LoginController>();
-              loginController.isLogin.value
-                  ? loginController.logout()
-                  : Get.defaultDialog(title: 'Log in');
-            },
-            icon: Icon(Icons.login)),
+          icon: const Icon(Icons.list_alt),
+          onPressed: () {},
+        ),
+        const Spacer(),
+        IconButton(
+          icon: const Icon(Icons.notifications),
+          onPressed: () {},
+        ),
+        const Spacer(),
+        IconButton(
+          icon: const Icon(Icons.login),
+          onPressed: () {
+            final loginController = Get.find<LoginController>();
+            loginController.isLogin.value
+                ? loginController.logout()
+                : Get.defaultDialog(title: 'Log in');
+          },
+        ),
         const Spacer(flex: 2),
       ],
     );

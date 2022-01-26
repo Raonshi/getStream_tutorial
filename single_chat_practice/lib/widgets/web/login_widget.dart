@@ -30,7 +30,7 @@ class LoginInputWidget extends StatelessWidget {
                       Get.off(HomePage());
                     }
                   },
-                  child: Text('Login'),
+                  child: const Text('Login'),
                 ),
                 const Spacer(),
               ],
