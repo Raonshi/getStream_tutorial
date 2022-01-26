@@ -51,7 +51,7 @@ class ChannelListWidget extends StatelessWidget {
                     Get.find<WebTestController>().currentChannelCid.value =
                         channelList[index].cid!;
                     Get.put(
-                      ChannelController(channelList[index]),
+                      WebChannelController(channelList[index]),
                       tag: channelList[index].cid,
                     );
                   },

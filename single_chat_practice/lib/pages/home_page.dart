@@ -97,7 +97,7 @@ class HomePage extends StatelessWidget {
               child: Obx(
                 () {
                   try {
-                    final channelController = Get.find<ChannelController>(
+                    final channelController = Get.find<WebChannelController>(
                         tag: webController.currentChannelCid.value);
                     return StreamChannel(
                       channel: channelController.channel,

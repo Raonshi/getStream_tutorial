@@ -2,15 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:single_chat_practice/controllers/channel_ctrl.dart';
 import 'package:single_chat_practice/controllers/web_test_ctrl.dart';
+import 'package:single_chat_practice/services/platfrom_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class ChannelPage extends StatelessWidget {
   ChannelPage({Key? key}) : super(key: key);
-  final controller = Get.find<ChannelController>(
-      tag: Get.find<WebTestController>().currentChannelCid.value);
 
   @override
   Widget build(BuildContext context) {
+    final controller;
+    if (Get.find<PlatformService>().isWeb) {
+      controller = Get.find<WebChannelController>(
+          tag: Get.find<WebTestController>().currentChannelCid.value);
+    } else {
+      controller = Get.put(ChannelController);
+    }
+
     return Scaffold(
       appBar: const ChannelHeader(),
       body: SafeArea(
