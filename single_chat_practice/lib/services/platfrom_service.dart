@@ -8,9 +8,22 @@ class PlatformService extends GetxService {
   get isWeb => _isWeb.value;
   setIsWeb(value) => _isWeb.value = value;
 
-  @override
-  void onInit() {
-    super.onInit();
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   try {
+  //     if (Platform.isAndroid || Platform.isIOS) {
+  //       _isWeb.value = false;
+  //     } else {
+  //       _isWeb.value = true;
+  //     }
+  //   } catch (e) {
+  //     _isWeb.value = true;
+  //   }
+  //   Logger().d('PlatformService Init Done');
+  // }
+
+  void init() {
     try {
       if (Platform.isAndroid || Platform.isIOS) {
         _isWeb.value = false;
@@ -20,6 +33,6 @@ class PlatformService extends GetxService {
     } catch (e) {
       _isWeb.value = true;
     }
-    Logger().d('PlatformService Init Done');
+    Logger().d('==== PlatformService Init ====');
   }
 }

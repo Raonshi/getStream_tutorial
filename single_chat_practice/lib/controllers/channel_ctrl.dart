@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:single_chat_practice/services/api_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -30,6 +31,7 @@ class ChannelController extends GetxController {
 }
 
 class WebChannelController extends GetxController {
+  final messageText = ''.obs;
   late Channel channel;
   WebChannelController(this.channel);
 
