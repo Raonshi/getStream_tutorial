@@ -9,20 +9,20 @@ class LoginController extends GetxController {
   final isLogin = false.obs;
   final authUser = AuthUser().obs;
 
-  final streamChatService = Get.find<StreamChatService>();
-  final firebaseService = Get.find<FirebaseService>();
+  final FirebaseService firebaseService = Get.find<FirebaseService>();
+  final StreamChatService streamChatService = Get.find<StreamChatService>();
 
-  @override
-  void onInit() async {
-    super.onInit();
-    bool isCheck = await firebaseService.loginCheck(authUser.value);
+  void init() async {
+    bool isCheck = false;
+    if (Get.find<FirebaseService>().initDone.value) {
+      isCheck = await firebaseService.loginCheck(authUser.value);
+    }
 
     //if firebase has user's infomation
     if (isCheck) {
       authUser.value.firebaseUser = FirebaseAuth.instance.currentUser!;
       isLogin.value = await login();
     }
-
     lgr.Logger().d('=====login process done====');
   }
 

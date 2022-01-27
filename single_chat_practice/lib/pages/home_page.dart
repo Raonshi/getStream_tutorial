@@ -12,6 +12,7 @@ import 'package:single_chat_practice/pages/user/user_select_page.dart';
 import 'package:single_chat_practice/services/platfrom_service.dart';
 import 'package:single_chat_practice/widgets/web/channel_list_widget.dart';
 import 'package:single_chat_practice/widgets/web/top_bar.dart';
+import 'package:single_chat_practice/widgets/web/web_channel_widget.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:logger/logger.dart' as lgr;
 
@@ -82,7 +83,7 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       //Header
-      appBar: AppBar(title: TopBar()),
+      appBar: AppBar(title: const TopBar()),
 
       //Body
       body: SafeArea(
@@ -92,18 +93,20 @@ class HomePage extends StatelessWidget {
               flex: 2,
               child: ChannelListWidget(),
             ),
+            const VerticalDivider(),
             Expanded(
               flex: 4,
               child: Obx(
                 () {
                   try {
-                    final channelController = Get.find<ChannelController>(
+                    final channelController = Get.find<WebChannelController>(
                         tag: webController.currentChannelCid.value);
                     return StreamChannel(
                       channel: channelController.channel,
-                      child: ChannelPage(),
+                      child: WebChannelWidget(),
                     );
                   } catch (e) {
+                    lgr.Logger().d(e.toString());
                     return const Text(
                       'Click Your Chat',
                       textAlign: TextAlign.center,

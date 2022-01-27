@@ -11,8 +11,24 @@ class NotificationService extends GetxService {
 
   String messageIdTemp = '';
 
-  @override
-  void onInit() async {
+  // @override
+  // void onInit() async {
+  //   _firebaseMessaging = FirebaseMessaging.instance;
+  //   _firebaseMessaging.onTokenRefresh.listen((token) async {
+  //     streamChatService.client.value.addDevice(token, PushProvider.firebase);
+  //   });
+
+  //   _firebaseMessaging.setForegroundNotificationPresentationOptions(
+  //     alert: true, // Required to display a heads up notification
+  //     badge: true,
+  //     sound: true,
+  //   );
+
+  //   foregroundNotification();
+  //   super.onInit();
+  // }
+
+  void init() {
     _firebaseMessaging = FirebaseMessaging.instance;
     _firebaseMessaging.onTokenRefresh.listen((token) async {
       streamChatService.client.value.addDevice(token, PushProvider.firebase);
@@ -24,8 +40,9 @@ class NotificationService extends GetxService {
       sound: true,
     );
 
+    lgr.Logger().d("==== NotificationService Init ====");
+
     foregroundNotification();
-    super.onInit();
   }
 
   //Background Notification

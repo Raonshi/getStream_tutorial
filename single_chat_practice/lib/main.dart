@@ -4,19 +4,21 @@ import 'package:single_chat_practice/controllers/login_ctrl.dart';
 import 'package:single_chat_practice/init_binding.dart';
 import 'package:single_chat_practice/pages/home_page.dart';
 import 'package:single_chat_practice/pages/login_page.dart';
-import 'package:single_chat_practice/services/firebase_service.dart';
 import 'package:single_chat_practice/services/notification_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  InitBinding().initBind();
-  await Get.find<FirebaseService>().init();
+  final initController = Get.put(InitBinding());
+  initController.createService();
+  initController.initService();
+  //await Get.find<FirebaseService>().init();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final loginController = Get.put(LoginController());
+  //final loginController = Get.put(LoginController());
+  final loginController = Get.find<LoginController>();
   final notificationService = Get.find<NotificationService>();
 
   MyApp({Key? key}) : super(key: key);

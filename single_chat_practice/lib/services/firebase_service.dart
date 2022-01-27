@@ -14,6 +14,14 @@ abstract class AuthInterface {
 }
 
 class FirebaseService extends GetxService implements AuthInterface {
+  final initDone = false.obs;
+
+  // @override
+  // void onInit() async {
+  //   init();
+  //   super.onInit();
+  // }
+
   Future<void> init() async {
     if (Get.find<PlatformService>().isWeb) {
       await Firebase.initializeApp(
@@ -27,7 +35,8 @@ class FirebaseService extends GetxService implements AuthInterface {
     } else {
       await Firebase.initializeApp();
     }
-    Logger().d("asdfjlaksdfkdkdjfa;lksdjf");
+    initDone.value = true;
+    Logger().d("==== FirebaseService Init ====");
   }
 
   //loginCheck when you start application

@@ -9,10 +9,21 @@ import 'api_service.dart';
 import 'package:logger/logger.dart' as lgr;
 
 class StreamChatService extends GetxService {
+  final initDone = false.obs;
   final client = StreamChatClient('grdysyd7gzfn', logLevel: Level.INFO).obs;
   final selectedUser = <User>{}.obs;
   final loadingData = true.obs;
   final userList = [].obs;
+
+  // @override
+  // void onInit() {
+  //   initDone.value = true;
+  //   super.onInit();
+  // }
+
+  void init() {
+    lgr.Logger().d("==== StreamChatService Init ====");
+  }
 
   //connect client
   Future<User> connect(AuthUser authUser) async {
@@ -68,8 +79,8 @@ class StreamChatService extends GetxService {
   }
 
   Future<Channel> createChannel(BuildContext context) async {
-    var client = Get.find<StreamChatService>().client.value;
-    var currentUser = client.state.currentUser;
+    // var client = Get.find<StreamChatService>().client.value;
+    var currentUser = client.value.state.currentUser;
 
     late Channel channel;
 
@@ -81,11 +92,11 @@ class StreamChatService extends GetxService {
       members.add(user.id);
     }
 
-    await client
+    await client.value
         .channel('messaging', extraData: {'members': members})
         .create()
         .then((response) {
-          channel = Channel.fromState(client, response);
+          channel = Channel.fromState(client.value, response);
           channel.watch();
         });
 
@@ -98,7 +109,7 @@ class StreamChatService extends GetxService {
     await client.value.queryUsers(
       filter: Filter.and([
         //나를 제외한 모든 유저 표시
-        Filter.notEqual('id', StreamChat.of(context).currentUser!.id),
+        Filter.notEqual('id', client.value.state.currentUser!.id),
       ]),
       sort: const [SortOption('last_message_at')],
     ).then((value) {
