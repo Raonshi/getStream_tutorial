@@ -15,29 +15,22 @@ class StreamChatService extends GetxService {
   final loadingData = true.obs;
   final userList = [].obs;
 
-  // @override
-  // void onInit() {
-  //   initDone.value = true;
-  //   super.onInit();
-  // }
-
   void init() {
     lgr.Logger().d("==== StreamChatService Init ====");
   }
 
   //connect client
   Future<User> connect(AuthUser authUser) async {
-    var body = json.encode({
+    final body = json.encode({
       'userId': authUser.id,
       'name': authUser.name,
       'email': authUser.firebaseUser.email!
     });
 
     //request to server and response
-    //dynamic data = await ApiService().requestToken(body);
-    var data =
+    final data =
         await ApiService().request(type: 'post', action: 'token', body: body);
-    var userToken = data['token'];
+    final userToken = data['token'];
 
     //user infomation serialize
     User user = User(
@@ -79,16 +72,14 @@ class StreamChatService extends GetxService {
   }
 
   Future<Channel> createChannel(BuildContext context) async {
-    // var client = Get.find<StreamChatService>().client.value;
-    var currentUser = client.value.state.currentUser;
+    final currentUser = client.value.state.currentUser;
 
     late Channel channel;
 
     List<String> members = [];
     members.add(currentUser!.id);
 
-    for (int i = 0; i < selectedUser.length; i++) {
-      User user = selectedUser.elementAt(i);
+    for (var user in selectedUser) {
       members.add(user.id);
     }
 

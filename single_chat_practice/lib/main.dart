@@ -12,12 +12,10 @@ void main() async {
   final initController = Get.put(InitBinding());
   initController.createService();
   initController.initService();
-  //await Get.find<FirebaseService>().init();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  //final loginController = Get.put(LoginController());
   final loginController = Get.find<LoginController>();
   final notificationService = Get.find<NotificationService>();
 

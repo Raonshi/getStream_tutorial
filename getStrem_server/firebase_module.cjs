@@ -17,9 +17,8 @@ class Firebase{
     //put all user into firestore
     saveData = async (data) => {
         try{
-            //console.log(data[0])
-            for(var i = 0; i < data.length; i++){
-                var message = data[i]['message'];
+            for(var dataIndex = 0; dataIndex < data.length; dataIndex++){
+                var message = data[dataIndex]['message'];
                 var text = message['text'];
                 var date = message['created_at'];
 
@@ -31,23 +30,12 @@ class Firebase{
                 console.log('===================');
                 console.log(date);
 
-                /*
-                //저장일자는 메시지가 전송된 시간으로 저장해야함
-                //지금은 코드가 수행되는 시점의 현재시간으로 되어 있음.
-                var save = this.db.collection(user['id']).doc('save_'+date);
-                await save.set({
+                
+                var save = this.db.collection('save').doc(user['id']).collection('save').doc(text+"_"+date);
+                const item = {
                     'text': text,
                     'date': date,
                     'user': user['id'],
-                });
-                */
-                var save = this.db.collection('save').doc(user['id']).collection('save').doc(text+"_"+date+"_"+i);
-                const item = {
-                    itemName: {
-                        'text': text,
-                        'date': date,
-                        'user': user['id'],
-                    }
                 };
                 await save.set(item);
             }

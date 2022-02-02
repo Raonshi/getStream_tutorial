@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:single_chat_practice/services/api_service.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -17,15 +16,12 @@ class ChannelController extends GetxController {
   }
 
   Future<void> save(Message message) async {
-    var body = json.encode({
+    final body = json.encode({
       'userId': message.user!.id.toString(),
       'message': message.text,
     });
 
-    //dynamic data = ApiService().requestCommand('save', body);
-    dynamic data =
-        ApiService().request(type: 'post', action: 'save', body: body);
-
+    final data = ApiService().request(type: 'post', action: 'save', body: body);
     lgr.Logger().d("==============================$data");
   }
 }
@@ -51,9 +47,7 @@ class WebChannelController extends GetxController {
       'message': message.text,
     });
 
-    //dynamic data = ApiService().requestCommand('save', body);
-    dynamic data =
-        ApiService().request(type: 'post', action: 'save', body: body);
+    final data = ApiService().request(type: 'post', action: 'save', body: body);
 
     lgr.Logger().d("==============================$data");
   }

@@ -8,25 +8,7 @@ import 'package:logger/logger.dart' as lgr;
 class NotificationService extends GetxService {
   late FirebaseMessaging _firebaseMessaging;
   final streamChatService = Get.find<StreamChatService>();
-
   String messageIdTemp = '';
-
-  // @override
-  // void onInit() async {
-  //   _firebaseMessaging = FirebaseMessaging.instance;
-  //   _firebaseMessaging.onTokenRefresh.listen((token) async {
-  //     streamChatService.client.value.addDevice(token, PushProvider.firebase);
-  //   });
-
-  //   _firebaseMessaging.setForegroundNotificationPresentationOptions(
-  //     alert: true, // Required to display a heads up notification
-  //     badge: true,
-  //     sound: true,
-  //   );
-
-  //   foregroundNotification();
-  //   super.onInit();
-  // }
 
   void init() {
     _firebaseMessaging = FirebaseMessaging.instance;

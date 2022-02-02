@@ -13,7 +13,7 @@ class ApiService {
     Logger().d('ApiService Created!');
   }
 
-  final server = '1bc7-121-134-227-161.ngrok.io';
+  final server = 'e684-222-116-174-9.ngrok.io';
 
   request(
       {required String type,
@@ -36,6 +36,9 @@ class ApiService {
         break;
     }
 
+    // Uri uri = Uri.http(server, '/$action');
+    // response = await type(uri, body);
+
     if (response.statusCode != 200) {
       Logger().d('====Failed : ${response.statusCode}====');
       return;
@@ -51,8 +54,8 @@ class ApiService {
       'Content-Type': 'application/json',
     };
 
-    Logger().d(headers);
-    Logger().d(body);
+    // Logger().d(headers);
+    // Logger().d(body);
     var response = await http.post(uri, headers: headers, body: body);
     return response;
   }

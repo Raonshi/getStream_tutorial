@@ -44,22 +44,38 @@ class WebTestController extends GetxController {
   }
 
   Channel findMyChannel() {
-    late Channel channel;
+    late Channel result;
     var client = Get.find<StreamChatService>().client.value;
 
-    for (int i = 0; i < channelList.length; i++) {
-      bool isDone = false;
-      final memebers = channelList[i].queryMembers().then((value) {
-        for (int j = 0; j < value.members.length; j++) {
-          if (value.members[j].userId == client.state.currentUser?.id) {
-            channel = channelList[i];
-            isDone = true;
-            break;
-          }
-        }
-      });
-      if (isDone) break;
+    for (var channel in channelList) {
+      channel.queryMembers().then(
+            (response) => response.members
+                .where(
+                    (member) => member.userId == client.state.currentUser!.id)
+                .forEach((_) => result = channel),
+          );
     }
-    return channel;
+
+    for (Channel channel in channelList) {
+      channel.queryMembers().then((response) {
+        response.members
+            .any((member) => member.userId == client.state.currentUser!.id);
+      });
+    }
+
+    // for (int i = 0; i < channelList.length; i++) {
+    //   bool isDone = false;
+    //   final memebers = channelList[i].queryMembers().then((value) {
+    //     for (int j = 0; j < value.members.length; j++) {
+    //       if (value.members[j].userId == client.state.currentUser?.id) {
+    //         result = channelList[i];
+    //         isDone = true;
+    //         break;
+    //       }
+    //     }
+    //   });
+    //   if (isDone) break;
+    // }
+    return result;
   }
 }

@@ -16,12 +16,6 @@ abstract class AuthInterface {
 class FirebaseService extends GetxService implements AuthInterface {
   final initDone = false.obs;
 
-  // @override
-  // void onInit() async {
-  //   init();
-  //   super.onInit();
-  // }
-
   Future<void> init() async {
     if (Get.find<PlatformService>().isWeb) {
       await Firebase.initializeApp(

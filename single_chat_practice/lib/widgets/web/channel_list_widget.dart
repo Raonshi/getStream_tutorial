@@ -4,7 +4,6 @@ import 'package:single_chat_practice/controllers/channel_ctrl.dart';
 import 'package:single_chat_practice/controllers/web_test_ctrl.dart';
 import 'package:single_chat_practice/services/stream_chat_service.dart';
 import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
-import 'package:logger/logger.dart' as lgr;
 
 class ChannelListWidget extends StatelessWidget {
   ChannelListWidget({Key? key}) : super(key: key);

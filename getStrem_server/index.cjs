@@ -13,9 +13,9 @@ const chat = Chat.chat;
 
 //server init
 app.listen(4000, async ()=> {
-    
+    //ngrok url must be update when server init.
     await chat.client.updateAppSettings({ 
-        custom_action_handler_url: "http://1bc7-121-134-227-161.ngrok.io/save", 
+        custom_action_handler_url: "http://e684-222-116-174-9.ngrok.io/save", 
     });
     
     console.log('App listening on port 4000!');
@@ -26,7 +26,7 @@ app.post('/token', (req, res, next) => {
     console.log('req : ', req.body);
     const userToken = chat.client.createToken(req.body.userId);
     const storeAccount = fire.saveAccount(req.body);
-
+    
     if(storeAccount){
         res.json({success: 200, token: userToken});
     } 
@@ -52,6 +52,7 @@ app.post('/login-check', async (req, res) => {
 
 //save command call
 app.post('/save', async (req, res) => {
+    console.log('Save Command Call');
     const cid = req.body['message']['cid'];
     const text = req.body['message']['args'];
     const data = await chat.client.search({cid: cid}, {text: { "$autocomplete": text }});

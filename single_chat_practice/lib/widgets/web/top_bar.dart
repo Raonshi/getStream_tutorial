@@ -11,23 +11,14 @@ class TopBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Spacer(flex: 2),
-        IconButton(
-          icon: const Icon(Icons.people),
-          onPressed: () {},
-        ),
+        _buildTopBarButton(icon: Icons.people, onPressed: () {}),
         const Spacer(),
-        IconButton(
-          icon: const Icon(Icons.list_alt),
-          onPressed: () {},
-        ),
+        _buildTopBarButton(icon: Icons.list_alt, onPressed: () {}),
         const Spacer(),
-        IconButton(
-          icon: const Icon(Icons.notifications),
-          onPressed: () {},
-        ),
+        _buildTopBarButton(icon: Icons.notifications, onPressed: () {}),
         const Spacer(),
-        IconButton(
-          icon: const Icon(Icons.login),
+        _buildTopBarButton(
+          icon: Icons.login,
           onPressed: () {
             final loginController = Get.find<LoginController>();
             loginController.isLogin.value
@@ -37,6 +28,14 @@ class TopBar extends StatelessWidget {
         ),
         const Spacer(flex: 2),
       ],
+    );
+  }
+
+  Widget _buildTopBarButton(
+      {required IconData icon, required Function() onPressed}) {
+    return IconButton(
+      icon: Icon(icon),
+      onPressed: onPressed,
     );
   }
 }
