@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:single_chat_practice/etc/auth_user.dart';
 import 'package:single_chat_practice/services/notification_service.dart';
@@ -8,7 +7,14 @@ import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 import 'api_service.dart';
 import 'package:logger/logger.dart' as lgr;
 
-class StreamChatService extends GetxService {
+abstract class ChattingInterface {
+  connect(AuthUser authUser);
+  disconnect();
+  createChattingRoom();
+  fetchUsers(StreamChatClient client);
+}
+
+class StreamChatService extends GetxService implements ChattingInterface {
   final initDone = false.obs;
   final client = StreamChatClient('grdysyd7gzfn', logLevel: Level.INFO).obs;
   final selectedUser = <User>{}.obs;
@@ -20,6 +26,7 @@ class StreamChatService extends GetxService {
   }
 
   //connect client
+  @override
   Future<User> connect(AuthUser authUser) async {
     final body = json.encode({
       'userId': authUser.id,
@@ -57,31 +64,22 @@ class StreamChatService extends GetxService {
   }
 
   //dispose
-  Future<void> disconnect() async {
-    await client.value.disconnectUser();
-  }
+  @override
+  Future<void> disconnect() async => await client.value.disconnectUser();
 
-  String getChannelMembers(Channel channel, int index) {
-    lgr.Logger().d("asdasdasdasdasdasdasdasdasd \n ${channel.name}");
-    if (channel.name == 'null') {
-      return 'Channel_$index';
-    } else {
-      lgr.Logger().d(channel.name);
-      return channel.name!;
-    }
-  }
-
-  Future<Channel> createChannel(BuildContext context) async {
+  @override
+  Future<Channel> createChattingRoom() async {
     final currentUser = client.value.state.currentUser;
+    final List<String> members = List<String>.generate(
+      selectedUser.length + 1,
+      (index) {
+        return index == selectedUser.length
+            ? currentUser!.id
+            : selectedUser.elementAt(index).id;
+      },
+    );
 
-    late Channel channel;
-
-    List<String> members = [];
-    members.add(currentUser!.id);
-
-    for (var user in selectedUser) {
-      members.add(user.id);
-    }
+    late final Channel channel;
 
     await client.value
         .channel('messaging', extraData: {'members': members})
@@ -95,23 +93,23 @@ class StreamChatService extends GetxService {
     return channel;
   }
 
-  void fetchUsers(BuildContext context) async {
-    loadingData.value = true;
-    await client.value.queryUsers(
+  @override
+  void fetchUsers(StreamChatClient client) async {
+    await client.queryUsers(
       filter: Filter.and([
         //나를 제외한 모든 유저 표시
-        Filter.notEqual('id', client.value.state.currentUser!.id),
+        Filter.notEqual('id', client.state.currentUser!.id),
       ]),
       sort: const [SortOption('last_message_at')],
     ).then((value) {
       if (value.users.isNotEmpty) {
         userList.value = value.users.where((element) {
-          return element.id != client.value.state.currentUser!.id;
+          return element.id != client.state.currentUser!.id;
         }).toList();
       }
-      loadingData.value = false;
-    }).catchError((error) {
-      loadingData.value = false;
+    }).catchError((e) {
+      loadingData.value = true;
     });
+    loadingData.value = false;
   }
 }

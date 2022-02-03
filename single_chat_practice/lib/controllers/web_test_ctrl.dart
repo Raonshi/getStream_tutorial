@@ -44,8 +44,8 @@ class WebTestController extends GetxController {
   }
 
   Channel findMyChannel() {
-    late Channel result;
-    var client = Get.find<StreamChatService>().client.value;
+    late final Channel result;
+    final client = Get.find<StreamChatService>().client.value;
 
     for (var channel in channelList) {
       channel.queryMembers().then(

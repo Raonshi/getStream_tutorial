@@ -13,7 +13,7 @@ class ApiService {
     Logger().d('ApiService Created!');
   }
 
-  final server = 'e684-222-116-174-9.ngrok.io';
+  final server = 'bda3-220-86-224-184.ngrok.io';
 
   request(
       {required String type,

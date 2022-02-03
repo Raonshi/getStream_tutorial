@@ -11,8 +11,7 @@ class UserListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //controller.fetchUsers(context);
-    Get.find<StreamChatService>().fetchUsers(context);
+    streamService.fetchUsers(StreamChat.of(context).client);
     return Obx(
       () => SafeArea(
         child: streamService.loadingData.value
@@ -35,7 +34,7 @@ class UserListPage extends StatelessWidget {
                           final streamCtrl = Get.find<StreamChatService>();
                           streamCtrl.selectedUser.add(user);
                           Channel channel =
-                              await streamCtrl.createChannel(context);
+                              await streamCtrl.createChattingRoom();
                           Get.to(
                             () => StreamChannel(
                               child: StreamChatTheme(

@@ -8,6 +8,8 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 class UserSelectPage extends StatelessWidget {
   UserSelectPage({Key? key}) : super(key: key);
   final streamCtrl = Get.find<StreamChatService>();
+  final loginCtrl = Get.find<LoginController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,8 +22,7 @@ class UserSelectPage extends StatelessWidget {
             child: UserListView(
               filter: Filter.and([
                 //나를 제외한 모든 유저 표시
-                Filter.notEqual(
-                    'id', Get.find<LoginController>().authUser.value.id),
+                Filter.notEqual('id', loginCtrl.authUser.value.id),
               ]),
               sort: const [SortOption('last_message_at')],
               selectedUsers: streamCtrl.selectedUser.value,
@@ -39,7 +40,7 @@ class UserSelectPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.question_answer_rounded),
         onPressed: () async {
-          Channel channel = await streamCtrl.createChannel(context);
+          Channel channel = await streamCtrl.createChattingRoom();
           Get.off(
             () => StreamChannel(
               child: StreamChatTheme(

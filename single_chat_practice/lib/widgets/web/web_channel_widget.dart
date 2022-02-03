@@ -7,7 +7,7 @@ import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 
 class WebChannelWidget extends StatelessWidget {
   WebChannelWidget({Key? key}) : super(key: key);
-  final controller = Get.find<WebChannelController>(
+  final controller = Get.find<ChannelController>(
     tag: Get.find<WebTestController>().currentChannelCid.value,
   );
 

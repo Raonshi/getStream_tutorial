@@ -1,14 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 
 void main() {
   group('Functional Programming Practice', () {
     test('test', () async {
-      Map<String, dynamic> jsonData = jsonDecode(data);
-
-      Logger().d(jsonData.toString());
+      List<int> list = [1, 1, 3, 6, 5, 4, 7, 0, 8, 9];
+      final result = list.toSet();
+      Logger().d(result);
     });
   });
 }

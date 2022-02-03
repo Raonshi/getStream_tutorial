@@ -5,6 +5,10 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:logger/logger.dart' as lgr;
 
 class ChannelController extends GetxController {
+  final messageText = ''.obs;
+  late Channel channel;
+  ChannelController(this.channel);
+
   //send custom command
   Future<void> sendCommand(Message message) async {
     if (message.text == null) {
