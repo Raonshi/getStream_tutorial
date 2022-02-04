@@ -11,7 +11,7 @@ class UserListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    streamService.fetchUsers(StreamChat.of(context).client);
+    streamService.fetchUsers();
     return Obx(
       () => SafeArea(
         child: streamService.loadingData.value

@@ -15,7 +15,7 @@ const chat = Chat.chat;
 app.listen(4000, async ()=> {
     //ngrok url must be update when server init.
     await chat.client.updateAppSettings({ 
-        custom_action_handler_url: "http://bda3-220-86-224-184.ngrok.io/save", 
+        custom_action_handler_url: "http://5b8e-220-86-224-184.ngrok.io/save", 
     });
     
     console.log('App listening on port 4000!');

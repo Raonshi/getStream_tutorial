@@ -2,7 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:single_chat_practice/services/stream_chat_service.dart';
-import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 import 'package:logger/logger.dart' as lgr;
 
 class NotificationService extends GetxService {
@@ -23,25 +23,12 @@ class NotificationService extends GetxService {
     );
 
     lgr.Logger().d("==== NotificationService Init ====");
-
-    foregroundNotification();
   }
 
   //Background Notification
   void backgroundNotification(Event event) async {
     final client = streamChatService.client.value;
     showNotification(client, event);
-  }
-
-  //Foreground Notification
-  void foregroundNotification() {
-    final client = streamChatService.client.value;
-    client
-        .on(EventType.messageNew, EventType.notificationMessageNew)
-        .listen((event) async {
-      lgr.Logger().d("YEEEEEEEEE : ${event.type}");
-      await showNotification(client, event);
-    });
   }
 
   //Showing Notification

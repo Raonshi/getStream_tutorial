@@ -4,12 +4,16 @@ import 'package:logger/logger.dart';
 void main() {
   group('Functional Programming Practice', () {
     test('test', () async {
-      List<int> list = [1, 1, 3, 6, 5, 4, 7, 0, 8, 9];
-      final result = list.toSet();
-      Logger().d(result);
+      Logger().d(bracket('joe'));
     });
   });
 }
+
+String bracket(String str) => generalBracket('{', '}', str);
+String doubleBracket(String str) => generalBracket('{{', '}}', str);
+
+String generalBracket(String prefix, String subfix, String str) =>
+    prefix + str + subfix;
 
 late List<TestObject> testerList;
 
